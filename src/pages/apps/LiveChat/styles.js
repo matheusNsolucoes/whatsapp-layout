@@ -8,7 +8,7 @@ import {
     FaTrash,
     SlOptionsVertical,
 } from '../../../styles/Icons';
-import theme from './theme';
+import theme from '../../../styles/theme';
 
 export const Container = styled.div`
     width: 100%;

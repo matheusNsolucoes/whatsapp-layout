@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { RiSendPlaneFill } from "../../../../styles/Icons";
-import theme from '../theme';
+import theme from '../../../../styles/theme';
 
 
 export const Container = styled.div`
