@@ -126,7 +126,7 @@ const emailAppRoutes = {
 };
 
 const chatAppRoutes = {
-    path: '/apps/:userIns/live-chat/:chatId?',
+    path: '/apps/live-chat',
     name: 'Chat ao Vivo',
     icon: FeatherIcon.MessageCircle,
     component: ChatPage,
@@ -255,9 +255,8 @@ const allRoutes = [
     chatAppRoutes,
     audienceRoutes,
     ...appRoutes,
-    authRoutes,
 ];
 
 const authProtectedRoutes = [dashboardRoutes, audienceRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
-export { allRoutes, authProtectedRoutes, allFlattenRoutes };
+export { allRoutes, authProtectedRoutes, allFlattenRoutes, authRoutes };

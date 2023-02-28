@@ -3,9 +3,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import MetisMenu from 'metismenujs/dist/metismenujs';
+import nookies from 'nookies';
 
 import { initMenu, changeActiveMenuFromLocation } from '../redux/actions';
-
 
 const MenuItemWithChildren = ({ item, linkClassNames, subMenuClassNames, activatedMenuItemIds }) => {
     const Icon = item.icon || null;
@@ -39,12 +39,12 @@ const MenuItemWithChildren = ({ item, linkClassNames, subMenuClassNames, activat
                                     subMenuClassNames="side-nav-third-level"
                                 />
                             ) : (
-                                    <MenuItem
-                                        item={child}
-                                        className={classNames({ active: activatedMenuItemIds.indexOf(child.id) >= 0 })}
-                                        linkClassName=""
-                                    />
-                                )}
+                                <MenuItem
+                                    item={child}
+                                    className={classNames({ active: activatedMenuItemIds.indexOf(child.id) >= 0 })}
+                                    linkClassName=""
+                                />
+                            )}
                         </React.Fragment>
                     );
                 })}
@@ -63,10 +63,16 @@ const MenuItem = ({ item, className, linkClassName }) => {
 
 const MenuItemLink = ({ item, className }) => {
     const Icon = item.icon || null;
+    const { userIns } = nookies.get('userIns');
+
     return (
-        <Link to={item.path.includes("/live-chat") ? "/apps/teste:afbe9fde4d8618738395fb13bc327d81f1033e8f32b7c6b62f2cd0159d2b74b1/live-chat" : item.path} className={classNames('side-nav-link-ref', 'side-sub-nav-link', className)}>
+        <Link
+            to={`/${userIns}${item.path}`}
+            className={classNames('side-nav-link-ref', 'side-sub-nav-link', className)}>
             {item.icon && <Icon />}
-            {item.badge && <span className={`font-size-12 badge badge-${item.badge.variant} float-right`}>{item.badge.text}</span>}
+            {item.badge && (
+                <span className={`font-size-12 badge badge-${item.badge.variant} float-right`}>{item.badge.text}</span>
+            )}
             <span> {item.name} </span>
         </Link>
     );
@@ -94,7 +100,7 @@ class AppMenu extends Component {
         });
     };
 
-    componentDidUpdate = prevProps => {
+    componentDidUpdate = (prevProps) => {
         if (
             !prevProps.menu.menuItems ||
             (prevProps.menu.menuItems && prevProps.menu.menuItems !== this.props.menu.menuItems)
@@ -109,14 +115,14 @@ class AppMenu extends Component {
 
     initMenu() {
         if (this.props.mode === 'horizontal') {
-            const menuRef = this.menuRef = new MetisMenu('#menu-bar').on('shown.metisMenu', function(event) {
+            const menuRef = (this.menuRef = new MetisMenu('#menu-bar').on('shown.metisMenu', function (event) {
                 window.addEventListener('click', function menuClick(e) {
                     if (!event.target.contains(e.target)) {
                         menuRef.hide(event.detail.shownElement);
                         window.removeEventListener('click', menuClick);
                     }
                 });
-            });
+            }));
         } else {
             this.menuRef = new MetisMenu('#menu-bar');
         }
@@ -124,54 +130,54 @@ class AppMenu extends Component {
 
     render() {
         const isHorizontal = this.props.mode === 'horizontal';
-        const activatedKeys = isHorizontal ? [] : this.props.menu ? (this.props.menu.activatedMenuItemIds? this.props.menu.activatedMenuItemIds :[]) : [] || [];
+        const activatedKeys = isHorizontal
+            ? []
+            : this.props.menu
+            ? this.props.menu.activatedMenuItemIds
+                ? this.props.menu.activatedMenuItemIds
+                : []
+            : [] || [];
 
         return (
             <React.Fragment>
-                
-                        {this.props.menu && this.props.menu.menuItems && (
-                            <ul className="metismenu" id="menu-bar">
-                                {this.props.menu.menuItems.map((item, i) => {
-                                    return (
-                                        <React.Fragment key={item.id}>
-                                            {item.header && !isHorizontal && (
-                                                <li className="menu-title" key={i + '-el'}>
-                                                    {item.header}
-                                                </li>
-                                            )}
+                {this.props.menu && this.props.menu.menuItems && (
+                    <ul className="metismenu" id="menu-bar">
+                        {this.props.menu.menuItems.map((item, i) => {
+                            return (
+                                <React.Fragment key={item.id}>
+                                    {item.header && !isHorizontal && (
+                                        <li className="menu-title" key={i + '-el'}>
+                                            {item.header}
+                                        </li>
+                                    )}
 
-                                            {item.children ? (
-                                                <MenuItemWithChildren
-                                                    item={item}
-                                                    subMenuClassNames="nav-second-level"
-                                                    activatedMenuItemIds={activatedKeys}
-                                                    linkClassNames="side-nav-link"
-                                                />
-                                            ) : (
-                                                    <MenuItem
-                                                        item={item}
-                                                        className={classNames({ 'mm-active': activatedKeys.indexOf(item.id) >= 0 })}
-                                                        linkClassName="side-nav-link"
-                                                    />
-                                                )}
-                                        </React.Fragment>
-                                    );
-                                })}
-                            </ul>
-                        )}
+                                    {item.children ? (
+                                        <MenuItemWithChildren
+                                            item={item}
+                                            subMenuClassNames="nav-second-level"
+                                            activatedMenuItemIds={activatedKeys}
+                                            linkClassNames="side-nav-link"
+                                        />
+                                    ) : (
+                                        <MenuItem
+                                            item={item}
+                                            className={classNames({ 'mm-active': activatedKeys.indexOf(item.id) >= 0 })}
+                                            linkClassName="side-nav-link"
+                                        />
+                                    )}
+                                </React.Fragment>
+                            );
+                        })}
+                    </ul>
+                )}
             </React.Fragment>
         );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         menu: state.AppMenu,
     };
 };
-export default withRouter(
-    connect(
-        mapStateToProps,
-        { initMenu, changeActiveMenuFromLocation }
-    )(AppMenu)
-);
+export default withRouter(connect(mapStateToProps, { initMenu, changeActiveMenuFromLocation })(AppMenu));

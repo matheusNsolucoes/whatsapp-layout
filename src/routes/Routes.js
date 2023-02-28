@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import { isUserAuthenticated } from '../helpers/authUtils';
 import * as layoutConstants from '../constants/layout';
-import { allFlattenRoutes as routes } from './index';
+import { allFlattenRoutes as routes, authRoutes } from './index';
+import { authFlattenRoutes } from './index';
 
 // Lazy loading and code splitting -
 // Derieved idea from https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52
@@ -70,12 +71,25 @@ class Routes extends Component {
                             !route.children ?
                                 <route.route
                                     key={index}
-                                    path={route.path}
+                                    path={`/:userIns${route.path}`}
                                     roles={route.roles}
                                     exact={route.exact}
                                     component={route.component}></route.route>
                                 : null
                         );
+                    })}
+
+                    {authRoutes.children.map((route, index) => {
+                        return (
+                            !route.children ?
+                            <route.route
+                                key={index}
+                                path={route.path}
+                                roles={route.roles}
+                                exact={route.exact}
+                                component={route.component}></route.route>
+                            : null
+                        )
                     })}
                 </Switch>
             </Layout>

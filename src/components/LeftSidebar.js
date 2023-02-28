@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { TbQrcode } from 'react-icons/tb';
@@ -13,15 +13,36 @@ import AppMenu from './AppMenu';
 import profilePic from '../assets/images/users/avatar-7.jpg';
 import QRCodeModal from './QRCodeModal';
 import { useModalContext } from '../modal.context';
+import { ListInstance } from '../services/api';
+import ListItem from './ListItem';
+import defaultPic from '../assets/images/defaultPic.jpg';
+import nookies from 'nookies'
 
 /**
  * User Widget
  */
 const UserProfile = () => {
+    const [allIns, setIns] = useState([]); // instância ou "ID" dos usuários
+
     const {
         modalState: { visible },
         openModal,
-      } = useModalContext();
+    } = useModalContext();
+
+    useEffect(() => {
+        // lista as instâncias do usuário dono do token requerido do localStorage
+        const listIns = async () => {
+            let data = await ListInstance({
+                userToken: localStorage.getItem('userToken'),
+            });
+            setIns(data.data);
+        };
+        listIns();
+    }, []);
+
+    const setCurrentKey = (instance) => {
+        nookies.set({sameSite: true}, "userIns", instance)
+    }
 
     return (
         <React.Fragment>
@@ -30,16 +51,37 @@ const UserProfile = () => {
                 <img src={profilePic} className="avatar-sm rounded-circle mr-2" alt="Shreyu" />
                 <img src={profilePic} className="avatar-xs rounded-circle mr-2" alt="Shreyu" />
 
-                <div className="media-body">
-                    <h6 className="pro-user-name mt-0 mb-0">Shreyu N</h6>
-                    <span className="pro-user-desc">Administrator</span>
-                </div>
-
                 <UncontrolledDropdown className="align-self-center profile-dropdown-menu">
                     <DropdownToggle
                         data-toggle="dropdown"
                         tag="button"
                         className="btn btn-link p-0 dropdown-toggle mr-0">
+                        <div className="media-body" style={{ marginRight: '30px' }}>
+                            <h6 className="pro-user-name mt-0 mb-0">Shreyu N</h6>
+                            <span className="pro-user-desc">Administrator</span>
+                        </div>
+                    </DropdownToggle>
+                    <DropdownMenu
+                        center
+                        className="topbar-dropdown-menu profile-dropdown-items"
+                        style={{ minWidth: '20rem', padding: "6px" }}>
+                        <h6>Suas Instâncias: </h6>
+                        <DropdownItem divider />
+                        {allIns.map((instance, index) => {
+                            return (
+                                <ListItem
+                                    key={index} // Gera uma lista para todos os usuários que resultaram da busca, renderizando o componente ListItem para cada um.
+                                    name={instance}
+                                    image={defaultPic}
+                                    onClick={() => setCurrentKey(instance)}
+                                />
+                            );
+                        })}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+
+                <UncontrolledDropdown className="align-self-center profile-dropdown-menu">
+                    <DropdownToggle data-toggle="dropdown" tag="button" className="btn btn p-0 dropdown-toggle mr-0">
                         <FeatherIcon.ChevronDown />
                     </DropdownToggle>
                     <DropdownMenu right className="topbar-dropdown-menu profile-dropdown-items">
@@ -47,7 +89,10 @@ const UserProfile = () => {
                             <FeatherIcon.User className="icon-dual icon-xs mr-2" />
                             <span>Minha Conta</span>
                         </Link>
-                        <div style={{cursor: "pointer"}} onClick={() => openModal()} className="dropdown-item notify-item">
+                        <div
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => openModal()}
+                            className="dropdown-item notify-item">
                             <TbQrcode className="icon-dual icon-xs mr-2" />
                             <span>QR Code</span>
                         </div>
