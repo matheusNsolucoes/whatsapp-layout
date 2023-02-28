@@ -263,7 +263,7 @@
   }
 
   .audio-recorder-mic {
-    content: url("../../assets/defaultPic.jpg");
+    content: url("../../../assets/images/defaultPic.jpg");
     height: 26px;
     width: auto;
   }

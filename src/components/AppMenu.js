@@ -64,7 +64,7 @@ const MenuItem = ({ item, className, linkClassName }) => {
 const MenuItemLink = ({ item, className }) => {
     const Icon = item.icon || null;
     return (
-        <Link to={item.path} className={classNames('side-nav-link-ref', 'side-sub-nav-link', className)}>
+        <Link to={item.path.includes("/live-chat") ? "/apps/teste:afbe9fde4d8618738395fb13bc327d81f1033e8f32b7c6b62f2cd0159d2b74b1/live-chat" : item.path} className={classNames('side-nav-link-ref', 'side-sub-nav-link', className)}>
             {item.icon && <Icon />}
             {item.badge && <span className={`font-size-12 badge badge-${item.badge.variant} float-right`}>{item.badge.text}</span>}
             <span> {item.name} </span>

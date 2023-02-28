@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { RiSendPlaneFill } from "../../../styles/Icons";
+import { RiSendPlaneFill } from "../../../../styles/Icons";
+import theme from '../theme';
+
 
 export const Container = styled.div`
   position: absolute;
@@ -12,7 +14,7 @@ export const Container = styled.div`
   left: 0;
   padding: 26px;
   overflow: hidden;
-  background-color: var(--sendImage-background);
+  background-color: ${theme.sendImageBackground};
 
   display: flex;
   flex-direction: column;
@@ -32,7 +34,7 @@ export const Image = styled.img`
   height: auto;
   border-radius: 6px;
   margin: 10px;
-  box-shadow: var(--boxShadow);
+  box-shadow: ${theme.boxShadow};
 `;
 
 export const SendOptions = styled.div`
@@ -52,16 +54,16 @@ export const Caption = styled.input`
   outline: none;
   border: none;
   width: 100%;
-  background-color: var(--secundary-background);
-  box-shadow: var(--boxShadow);
+  background-color: ${theme.secundaryBackground};
+  box-shadow: ${theme.boxShadow};
 `;
 
 export const MessageBtn = styled(RiSendPlaneFill)`
-  color: var(--grey);
+  color: ${theme.grey};
   cursor: pointer;
 
   .file {
-    background-color: var(--chat-accent-color);
+    background-color: ${theme.chatAccentColor};
     border-radius: 100%;
     padding: 16px;
   }
@@ -77,11 +79,11 @@ export const AudioPreviewContainer = styled.div`
   svg {
     fill: grey;
     font-size: 100px;
-    color: var(--grey);
+    color: ${theme.grey};
   }
 
   h3 {
-    color: var(--grey);
+    color: ${theme.grey};
     font-weight: 500;
   }
 `;

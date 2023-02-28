@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
-const ChatPage = React.lazy(() => import("../pages/apps/LiveChat/index").default);
 
 // auth
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -23,6 +22,7 @@ const ProjectList = React.lazy(() => import('../pages/apps/Project/List'));
 const ProjectDetail = React.lazy(() => import('../pages/apps/Project/Detail/'));
 const TaskList = React.lazy(() => import('../pages/apps/Tasks/List'));
 const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
+const ChatPage = React.lazy(() => import("../pages/apps/LiveChat/index"));
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -125,8 +125,8 @@ const emailAppRoutes = {
     roles: ['Admin'],
 };
 
-const projectAppRoutes = {
-    path: '/apps/livechat',
+const chatAppRoutes = {
+    path: '/apps/:userIns/live-chat/:chatId?',
     name: 'Chat ao Vivo',
     icon: FeatherIcon.MessageCircle,
     component: ChatPage,
@@ -192,7 +192,7 @@ const profileAppRoutes = {
     roles: ['Admin'],
 };
 
-const appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes, fluxAppRoutes, settingsAppRoutes, controlAppRoutes, profileAppRoutes];
+const appRoutes = [calendarAppRoutes, emailAppRoutes, chatAppRoutes, taskAppRoutes, fluxAppRoutes, settingsAppRoutes, controlAppRoutes, profileAppRoutes];
 
 
 // auth
@@ -252,6 +252,7 @@ const flattenRoutes = routes => {
 const allRoutes = [
     rootRoute,
     dashboardRoutes,
+    chatAppRoutes,
     audienceRoutes,
     ...appRoutes,
     authRoutes,

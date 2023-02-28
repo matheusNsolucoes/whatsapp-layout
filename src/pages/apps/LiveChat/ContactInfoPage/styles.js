@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from '../theme';
 
 export const Container = styled.div`
   width: 100%;
@@ -7,7 +8,7 @@ export const Container = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  background-color: var(--main-background);
+  background-color: ${theme.mainBackground};
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -18,7 +19,7 @@ export const Info = styled.div`
   align-items: center;
   flex-direction: row;
   gap: 5px;
-  color: var(--grey);
+  color: ${theme.grey};
   font-size: 14px;
   margin-top: 10px;
 
@@ -37,7 +38,7 @@ export const HeaderContainer = styled.div`
   padding: 32px;
   height: 40%;
   padding-top: 50px;
-  background-color: var(--secundary-background);
+  background-color: ${theme.secundaryBackground};
 `;
 
 export const ContactName = styled.p`
@@ -48,12 +49,12 @@ export const ContactName = styled.p`
 `;
 
 export const ContactInfo = styled.div`
-  background-color: var(--secundary-background);
+  background-color: ${theme.secundaryBackground};
   width: 100%;
   padding: 20px;
 
   small {
-    color: var(--grey);
+    color: ${theme.grey};
     margin-bottom: 10px;
   }
 `;
@@ -63,7 +64,7 @@ export const ContactPfp = styled.img`
   border-radius: 50%;
 `;
 export const ContactNumber = styled.small`
-  color: var(--grey);
+  color: ${theme.grey};
 `;
 export const Time = styled.div``;
 export const Description = styled.div`
@@ -73,7 +74,7 @@ export const Description = styled.div`
 export const Options = styled.div`
   height: 100%;
   width: 100%;
-  background-color: var(--secundary-background);
+  background-color: ${theme.secundaryBackground};
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -87,6 +88,6 @@ export const CloseHeader = styled.div`
 
   svg {
     cursor: pointer;
-    color: var(--grey);
+    color: ${theme.grey};
   }
 `;
