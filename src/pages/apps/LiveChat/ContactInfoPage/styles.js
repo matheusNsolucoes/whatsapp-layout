@@ -81,7 +81,7 @@ export const Options = styled.div`
 `;
 
 export const CloseHeader = styled.div`
-  background-color: var(--sendImage-background);
+  background-color: ${theme.sendImageBackground};
   width: 100%;
   height: 60px;
   padding: 16px;

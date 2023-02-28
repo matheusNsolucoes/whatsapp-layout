@@ -78,6 +78,7 @@ import './styles.css';
 import ContactInfoPage from './ContactInfoPage';
 import FilePreviewPage from './FilePreviewPage';
 import { useDetectOutsideClick } from '../../../utils/checkOutsideClick';
+import { Dropdown } from 'reactstrap';
 
 function ChatPage({ match }) {
     // Referencias a elementos
@@ -188,7 +189,7 @@ function ChatPage({ match }) {
     }, []);
 
     useEffect(() => {
-        console.log(file)
+        console.log(file);
 
         // toda vez que o estado file mudar, salva a imagem no banco de dados
         const getImage = async () => {

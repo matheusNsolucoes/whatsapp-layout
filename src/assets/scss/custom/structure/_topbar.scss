@@ -129,6 +129,13 @@
     .logo {
         // width: $leftbar-width;
 
+        .logo-lg {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+        }
+
         span.logo-sm {
             display: none;
         }
@@ -136,9 +143,11 @@
 }
 
 .text-logo {
-    text-transform: uppercase;
-    font-weight: 900;
+    text-transform: capitalize;
+    font-weight: 600;
     letter-spacing: 1px;
+    color: $primary;
+    font-size: 1.5rem;
 }
 
 /* Notification */

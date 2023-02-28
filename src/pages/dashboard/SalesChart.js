@@ -66,7 +66,7 @@ const SalesChart = () => {
                     series={data}
                     type="donut"
                     className="apex-charts mb-0 mt-4"
-                    height={302}
+                    height={202}
                 />
             </CardBody>
         </Card>

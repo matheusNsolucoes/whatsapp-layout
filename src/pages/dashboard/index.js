@@ -35,7 +35,7 @@ class Dashboard extends Component {
 
         return (
             <React.Fragment>
-                <div className="">
+                <div className="" style={{padding: "16px"}}>
                     { /* preloader */}
                     {this.props.loading && <Loader />}
 

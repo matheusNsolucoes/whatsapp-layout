@@ -9,29 +9,33 @@ class ProfileDropdown extends Component {
 
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.state = {
-            dropdownOpen: false
+            dropdownOpen: false,
         };
     }
 
     /*:: toggleDropdown: () => void */
     toggleDropdown() {
         this.setState({
-            dropdownOpen: !this.state.dropdownOpen
+            dropdownOpen: !this.state.dropdownOpen,
         });
     }
 
     render() {
         const profilePic = this.props.profilePic || null;
-        const tag = this.props.tag || "div";
+        const tag = this.props.tag || 'div';
 
         return (
-            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} className="notification-list align-self-center profile-dropdown" tag={tag}>
+            <Dropdown
+                isOpen={this.state.dropdownOpen}
+                toggle={this.toggleDropdown}
+                className="notification-list align-self-center profile-dropdown"
+                tag={tag}>
                 <DropdownToggle
                     data-toggle="dropdown"
                     tag="a"
                     className="nav-link dropdown-toggle nav-user mr-0 mr-0"
-                    onClick={this.toggleDropdown} aria-expanded={this.state.dropdownOpen}>
-
+                    onClick={this.toggleDropdown}
+                    aria-expanded={this.state.dropdownOpen}>
                     <div className="media user-profile ">
                         <img src={profilePic} alt={this.props.username} className="rounded-circle align-self-center" />
                         <div className="media-body text-left">
@@ -47,13 +51,15 @@ class ProfileDropdown extends Component {
                     <div onClick={this.toggleDropdown}>
                         {this.props.menuItems.map((item, i) => {
                             const Icon = item.icon;
-                            return <React.Fragment key={i + "-profile-menu"}>
-                                {item.hasDivider ? <DropdownItem divider /> : null}
-                            <Link to={item.redirectTo} className="dropdown-item notify-item">
-                                    <Icon className="icon-dual icon-xs mr-2"></Icon>
-                                    <span>{item.label}</span>
-                                </Link>
-                            </React.Fragment>
+                            return (
+                                <React.Fragment key={i + '-profile-menu'}>
+                                    {item.hasDivider ? <DropdownItem divider /> : null}
+                                    <Link to={item.redirectTo} className="dropdown-item notify-item">
+                                        <Icon className="icon-dual icon-xs mr-2"></Icon>
+                                        <span>{item.label}</span>
+                                    </Link>
+                                </React.Fragment>
+                            );
                         })}
                     </div>
                 </DropdownMenu>
