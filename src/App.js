@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Routes from './routes/Routes';
 import { ModalProvider } from './modal.context';
-
 // setup fake backend
 import { configureFakeBackend } from './helpers';
 
@@ -26,7 +25,7 @@ class App extends Component {
     render() {
         return (
             <ModalProvider>
-                <Routes></Routes>
+                <Routes />
             </ModalProvider>
         );
     }

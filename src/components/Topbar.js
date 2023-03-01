@@ -77,6 +77,7 @@ class Topbar extends Component {
         super(props);
 
         this.handleRightSideBar = this.handleRightSideBar.bind(this);
+        this.userIns = localStorage.getItem("userIns")
     }
 
     /**
@@ -92,7 +93,7 @@ class Topbar extends Component {
                 <div className="navbar navbar-expand flex-column flex-md-row navbar-custom">
                     <Container fluid>
                         {/* logo */}
-                        <Link to="/" className="navbar-brand mr-0 mr-md-2 logo">
+                        <Link to={`/${this.userIns}`} className="navbar-brand mr-0 mr-md-2 logo">
                             <span className="logo-lg">
                                 <img src={logo} alt="" height="36" />
                                 <span className="d-inline h5 ml-2 text-logo">AtendeZap</span>

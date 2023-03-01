@@ -244,7 +244,7 @@ export const MessageContainer = styled.div`
     margin: 4px;
     max-width: 60%;
     width: fit-content;
-    padding: 6px;
+    padding: 4px;
     word-break: break-word;
     margin: 10px 0;
     gap: 5px;
@@ -318,6 +318,12 @@ export const DocumentContainer = styled.div`
 
     p {
         font-size: 13px;
+    }
+    
+    sub {
+        position: absolute;
+        bottom: 0;
+        right: 5px;
     }
 `;
 
@@ -417,6 +423,11 @@ export const AudioMessage = styled.div`
         width: 52px;
         height: 52px;
     }
+
+    sub {
+        position: absolute;
+        right: 5px;
+    }
 `;
 
 export const LastMessage = styled.div`
@@ -505,6 +516,13 @@ export const Menu = styled.div`
 export const VideoContainer = styled.video`
     width: 100%;
     height: 100%;
+
+    sub {
+        position: absolute;
+        bottom: 0;
+        right: 5px;
+        color: #fff;
+    }
 `;
 
 export const AudioPreviewContainer = styled.div`
@@ -630,3 +648,12 @@ export const OptionsDropdown = styled.div`
         cursor: pointer;
     }
 `;
+
+export const ImageWrapper = styled.div`
+    sub {
+        position: absolute;
+        right: 10px;
+        bottom: 2px;
+        color: #fff;
+    }
+`

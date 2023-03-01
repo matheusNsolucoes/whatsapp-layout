@@ -7,7 +7,7 @@ export const Container = styled.div`
     align-items: center;
     padding: 6px;
     gap: 10px;
-    transition: .2s;
+    transition: 0.2s;
     cursor: pointer;
 
     :hover {
@@ -21,11 +21,28 @@ export const Container = styled.div`
     }
 
     p {
+        margin-bottom: 0px;
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+
+        small {
+            margin-left: 2rem;
+        }
+    }
+
+    span {
         white-space: nowrap;
         width: 80%;
         overflow: hidden;
         text-overflow: ellipsis;
         margin-bottom: 0px;
         padding-bottom: 0px;
+        font-size: 11px;
     }
+`;
+
+export const DeleteBtn = styled.div`
+    padding: 6px;
 `;

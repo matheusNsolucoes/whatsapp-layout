@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { TbQrcode } from 'react-icons/tb';
 import { isMobileOnly } from 'react-device-detect';
@@ -16,13 +16,14 @@ import { useModalContext } from '../modal.context';
 import { ListInstance } from '../services/api';
 import ListItem from './ListItem';
 import defaultPic from '../assets/images/defaultPic.jpg';
-import nookies from 'nookies'
+import { useCookies } from 'react-cookie';
 
 /**
  * User Widget
  */
 const UserProfile = () => {
     const [allIns, setIns] = useState([]); // instância ou "ID" dos usuários
+    const [cookies, setCookie] = useCookies('[userIns]');
 
     const {
         modalState: { visible },
@@ -41,8 +42,9 @@ const UserProfile = () => {
     }, []);
 
     const setCurrentKey = (instance) => {
-        nookies.set({sameSite: true}, "userIns", instance)
-    }
+        localStorage.setItem('userIns', instance);
+        window.location = `/${instance}/dashboard`
+    };
 
     return (
         <React.Fragment>
@@ -64,7 +66,7 @@ const UserProfile = () => {
                     <DropdownMenu
                         center
                         className="topbar-dropdown-menu profile-dropdown-items"
-                        style={{ minWidth: '20rem', padding: "6px" }}>
+                        style={{ minWidth: '20rem', padding: '6px' }}>
                         <h6>Suas Instâncias: </h6>
                         <DropdownItem divider />
                         {allIns.map((instance, index) => {

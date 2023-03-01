@@ -3,12 +3,15 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import MetisMenu from 'metismenujs/dist/metismenujs';
-import nookies from 'nookies';
+import {useCookies} from "react-cookie"
 
 import { initMenu, changeActiveMenuFromLocation } from '../redux/actions';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const MenuItemWithChildren = ({ item, linkClassNames, subMenuClassNames, activatedMenuItemIds }) => {
     const Icon = item.icon || null;
+
     return (
         <li className={classNames('side-nav-item', { 'mm-active': activatedMenuItemIds.indexOf(item.id) >= 0 })}>
             <Link
@@ -63,7 +66,7 @@ const MenuItem = ({ item, className, linkClassName }) => {
 
 const MenuItemLink = ({ item, className }) => {
     const Icon = item.icon || null;
-    const { userIns } = nookies.get('userIns');
+    const userIns = localStorage.getItem("userIns")
 
     return (
         <Link

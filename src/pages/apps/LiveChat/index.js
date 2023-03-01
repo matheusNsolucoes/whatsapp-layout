@@ -37,6 +37,7 @@ import {
     TrashBtn,
     OptionsIcon,
     OptionsDropdown,
+    ImageWrapper,
 } from './styles';
 import InputEmoji from 'react-input-emoji';
 import { pdfjs } from 'react-pdf';
@@ -643,11 +644,7 @@ function ChatPage({ match }) {
                                                                 pfp: userPictureUrl,
                                                             }}
                                                         />
-                                                        <p>{msg.caption}</p>
-                                                        <sub>
-                                                            {convertToMessageFormat(msg.date)}
-                                                            <BsCheckAll size={15} />
-                                                        </sub>
+                                                        {msg.caption != '' && <p>{msg.caption}</p>}
                                                     </>
                                                 ) : (
                                                     <NormalMessage>
@@ -818,12 +815,19 @@ const FileMessage = ({ message }) => {
                         <p>{message.msg.text.split('.').pop().toUpperCase()}</p>
                     </div>
                     <MdDownloadForOffline size={30} fill="#A2ABB2" />
+                    <sub>
+                        {convertToMessageFormat(message.msg.date)}
+                        <BsCheckAll size={15} />
+                    </sub>
                 </DocumentContainer>
             )}
             {['.mp4', '.mov'].some((el) => message.msg?.text?.includes(el)) && (
                 <VideoContainer controls>
                     <source src={`${process.env.REACT_APP_URL}${message.msg.text}`} type="video/mp4" />
-                    <sub>{convertToDate(message.msg.date)}</sub>
+                    <sub>
+                        {convertToMessageFormat(message.msg.date)}
+                        <BsCheckAll size={15} />
+                    </sub>
                 </VideoContainer>
             )}
             {['.mp3', '.wav', '-blob'].some((el) => message.msg?.text?.includes(el)) && (
@@ -855,14 +859,24 @@ const FileMessage = ({ message }) => {
                         }}
                         layout="horizontal-reverse"
                     />
+                    <sub>
+                        {convertToMessageFormat(message.msg.date)}
+                        <BsCheckAll size={15} />
+                    </sub>
                 </AudioMessage>
             )}
             {['.png', '.jpg', '.jpeg'].some((el) => message.msg?.text?.includes(el)) && (
-                <ImageMessage
-                    src={`${process.env.REACT_APP_URL}${message.msg.text}`}
-                    alt={message.msg.text}
-                    onClick={() => openImageFullPreview(`${process.env.REACT_APP_URL}${message.msg.text}`)}
-                />
+                <ImageWrapper>
+                    <ImageMessage
+                        src={`${process.env.REACT_APP_URL}${message.msg.text}`}
+                        alt={message.msg.text}
+                        onClick={() => openImageFullPreview(`${process.env.REACT_APP_URL}${message.msg.text}`)}
+                    />
+                    <sub>
+                        {convertToMessageFormat(message.msg.date)}
+                        <BsCheckAll size={15} />
+                    </sub>
+                </ImageWrapper>
             )}
         </>
     );

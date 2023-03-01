@@ -22,7 +22,8 @@ const ProjectList = React.lazy(() => import('../pages/apps/Project/List'));
 const ProjectDetail = React.lazy(() => import('../pages/apps/Project/Detail/'));
 const TaskList = React.lazy(() => import('../pages/apps/Tasks/List'));
 const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
-const ChatPage = React.lazy(() => import("../pages/apps/LiveChat/index"));
+const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
+const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -54,12 +55,13 @@ const Editor = React.lazy(() => import('../pages/forms/Editor'));
 const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
 const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 
+const userIns = localStorage.getItem('userIns');
 
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     <Route
         {...rest}
-        render={props => {
+        render={(props) => {
             if (!isUserAuthenticated()) {
                 // not logged in so redirect to login page with the return url
                 return <Redirect to={{ pathname: '/account/login', state: { from: props.location } }} />;
@@ -82,7 +84,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
 const rootRoute = {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/dashboard" />,
+    component: () => <Redirect to={`/${userIns}/dashboard`} />,
     route: PrivateRoute,
 };
 
@@ -93,7 +95,7 @@ const dashboardRoutes = {
     icon: FeatherIcon.Sliders,
     component: Dashboard,
     roles: ['Admin'],
-    route: PrivateRoute
+    route: PrivateRoute,
 };
 
 const audienceRoutes = {
@@ -102,7 +104,7 @@ const audienceRoutes = {
     icon: FeatherIcon.Users,
     component: Dashboard,
     roles: ['Admin'],
-    route: PrivateRoute
+    route: PrivateRoute,
 };
 
 // apps
@@ -160,7 +162,7 @@ const fluxAppRoutes = {
     path: '/apps/chatflux',
     name: 'Fluxo de Conversas',
     icon: FeatherIcon.MessageSquare,
-    component: CalendarApp,
+    component: ChatFlux,
     route: PrivateRoute,
     roles: ['Admin'],
 };
@@ -192,8 +194,16 @@ const profileAppRoutes = {
     roles: ['Admin'],
 };
 
-const appRoutes = [calendarAppRoutes, emailAppRoutes, chatAppRoutes, taskAppRoutes, fluxAppRoutes, settingsAppRoutes, controlAppRoutes, profileAppRoutes];
-
+const appRoutes = [
+    calendarAppRoutes,
+    emailAppRoutes,
+    chatAppRoutes,
+    taskAppRoutes,
+    fluxAppRoutes,
+    settingsAppRoutes,
+    controlAppRoutes,
+    profileAppRoutes,
+];
 
 // auth
 const authRoutes = {
@@ -234,11 +244,11 @@ const authRoutes = {
 };
 
 // flatten the list of all nested routes
-const flattenRoutes = routes => {
+const flattenRoutes = (routes) => {
     let flatRoutes = [];
 
     routes = routes || [];
-    routes.forEach(item => {
+    routes.forEach((item) => {
         flatRoutes.push(item);
 
         if (typeof item.children !== 'undefined') {
@@ -249,13 +259,7 @@ const flattenRoutes = routes => {
 };
 
 // All routes
-const allRoutes = [
-    rootRoute,
-    dashboardRoutes,
-    chatAppRoutes,
-    audienceRoutes,
-    ...appRoutes,
-];
+const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, ...appRoutes];
 
 const authProtectedRoutes = [dashboardRoutes, audienceRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
