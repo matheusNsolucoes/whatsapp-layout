@@ -62,6 +62,8 @@ import {
     getContactLastMessage,
     blockContact,
     clearChat,
+    getGroups,
+    getContactPic,
 } from '../../../services/api';
 import {
     BsImage,
@@ -112,6 +114,7 @@ function ChatPage({ match }) {
 
     // Estados de informação
     const [contacts, setContacts] = useState([]); // estado que guarda os contatos do usuário
+    const [groups, setGroups] = useState([]);
     const [chatMsgs, setChatMsgs] = useState([]); // estado que guarda o histórico de mensagens com o contato selecionado
     const [currentPage, setCurrentPage] = useState(-15); // usado para otimizar o carregamento do chat
     const [fileUrl, setFileUrl] = useState('');
@@ -168,10 +171,44 @@ function ChatPage({ match }) {
             let data = await getContacts({
                 userToken: localStorage.getItem('userToken'),
             });
+
+            let groupData = await getGroups({
+                userId: userIns,
+            });
+
             setContacts(data.data);
+            setGroups(groupData.data);
         };
         getAllContacts();
     }, []);
+
+    useEffect(() => {
+        // hook que busca a foto de perfil do usuário da aplicação
+        const userPicture = () => {
+            if (userIns !== '') {
+                contacts.forEach(async (contact) => {
+                    let data = await getContactPic({
+                        userId: userIns,
+                        contactNumber: contact.number,
+                    });
+
+                    contact.pfp = data.data;
+                    setNewMessageFlag((prev) => !prev);
+                })
+
+                groups.forEach(async (group) => {
+                    let data = await getContactPic({
+                        userId: userIns,
+                        contactNumber: group.id,
+                    });
+
+                    group.profilePicture = data.data;
+                    setNewMessageFlag((prev) => !prev);
+                });
+            }
+        };
+        userPicture();
+    }, [groups, contacts]);
 
     useEffect(() => {
         let socket = io.connect(process.env.REACT_APP_URL); // socket de conexão com o back-end
@@ -190,8 +227,6 @@ function ChatPage({ match }) {
     }, []);
 
     useEffect(() => {
-        console.log(file);
-
         // toda vez que o estado file mudar, salva a imagem no banco de dados
         const getImage = async () => {
             if (file) {
@@ -242,10 +277,6 @@ function ChatPage({ match }) {
         };
         userPicture();
     }, [insInfo]);
-
-    useEffect(() => {
-        console.log(chatId);
-    }, [chatId]);
 
     useEffect(() => {
         const getLast = () => {
@@ -553,6 +584,22 @@ function ChatPage({ match }) {
                                 </ContactRow>
                             );
                         })}
+                    {groups.map((group, index) => {
+                        return (
+                            <ContactRow key={index} onClick={() => handleGetChat(group.id, group.profilePicture, group.subject, '', '')}>
+                                <ContactPfp
+                                    src={group.profilePicture !== null ? group.profilePicture : defaultPic}
+                                    onError={({ currentTarget }) => {
+                                        currentTarget.onerror = null;
+                                        currentTarget.src = defaultPic;
+                                    }}
+                                />
+                                <ContactName>
+                                    <p>{group.subject}</p>
+                                </ContactName>
+                            </ContactRow>
+                        );
+                    })}
                 </Contacts>
             </ContactsList>
             <ChatMain>

@@ -90,6 +90,31 @@ export const getContacts = async (data) => {
   }
 };
 
+export const getContactPic = async (data) => {
+  try {
+    return await axios.get(`${url}/contacts/getContactPic?contactId=${data.contactNumber}`, {
+      headers: {
+        userId: data.userId,
+      },
+    });
+  } catch (error) {
+    console.log("Error while calling newConversations API ", error);
+  }
+};
+
+
+export const getGroups = async (data) => {
+  try {
+    return await axios.get(`${url}/contacts/getGroups`, {
+      headers: {
+        Authentication: data.userId,
+      },
+    });
+  } catch (error) {
+    console.log("Error while calling newConversations API ", error);
+  }
+};
+
 export const blockContact = async (data) => {
   try {
     return await axios.get(
