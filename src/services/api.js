@@ -271,6 +271,19 @@ export const uploadFile = async (data) => {
   }
 };
 
+// Groups 
+
+export const updateGroupName = async (data) => {
+  try {
+    return await axios.post(`${apiUrl}/group/updatesubject?key=${data.userId}`, {
+      id: data.groupId,
+      subject: data.newSubject
+    });
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 /*
   name: string,
   execution: number,

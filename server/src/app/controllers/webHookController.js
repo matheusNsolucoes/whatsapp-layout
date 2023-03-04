@@ -6,6 +6,8 @@ const livechat = require("../controllers/livechatController");
 const path = require("path");
 
 const userHandler = async (req, res) => {
+  console.log(req.body.body)
+
   switch (req.body.type) {
     case "connection": // se caso o web hook recebido por do tipo de conexão
       if (req.body.body.connection == "open") {
