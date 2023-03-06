@@ -26,6 +26,7 @@ export {
   BsLightningCharge,
   BsArrowsAngleContract,
   BsArrowsAngleExpand,
+  BsFilterRight
 } from "react-icons/bs";
 export { RiSendPlaneFill } from "react-icons/ri";
 export {

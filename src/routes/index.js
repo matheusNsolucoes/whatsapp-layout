@@ -24,6 +24,7 @@ const TaskList = React.lazy(() => import('../pages/apps/Tasks/List'));
 const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
 const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
 const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
+const Audience = React.lazy(() => import('../pages/apps/Audience/index'))
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -102,7 +103,7 @@ const audienceRoutes = {
     path: '/audiencce',
     name: 'Audiência',
     icon: FeatherIcon.Users,
-    component: Dashboard,
+    component: Audience,
     roles: ['Admin'],
     route: PrivateRoute,
 };
