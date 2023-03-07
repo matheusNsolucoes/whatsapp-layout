@@ -195,7 +195,6 @@ function ChatPage({ match }) {
                     });
 
                     contact.pfp = data.data;
-                    setNewMessageFlag((prev) => !prev);
                 });
 
                 groups.forEach(async (group) => {
@@ -205,9 +204,9 @@ function ChatPage({ match }) {
                     });
 
                     group.profilePicture = data.data;
-                    setNewMessageFlag((prev) => !prev);
                 });
             }
+            setNewMessageFlag((prev) => !prev);
         };
         userPicture();
     }, [groups, contacts]);

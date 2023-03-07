@@ -4,7 +4,7 @@ const theme = {
     secundaryText: '#696969',
     secundaryBackground: '#F0F2F5',
     tertiaryBackground: '#F5F6F6',
-    accentColor: '#34AF23',
+    accentColor: '#14C38E',
     chatBackground: '#F4F1EB',
     chatAccentColor: '#D9FDD3',
     accentColorHover: '#14C38E',
