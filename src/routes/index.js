@@ -25,6 +25,7 @@ const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
 const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
 const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
 const Audience = React.lazy(() => import('../pages/apps/Audience/index'))
+const Settings = React.lazy(() => import("../pages/apps/Settings/index"))
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -172,7 +173,7 @@ const settingsAppRoutes = {
     path: '/apps/settings',
     name: 'Configurações',
     icon: FeatherIcon.Settings,
-    component: CalendarApp,
+    component: Settings,
     route: PrivateRoute,
     roles: ['Admin'],
 };
@@ -260,7 +261,7 @@ const flattenRoutes = (routes) => {
 };
 
 // All routes
-const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, ...appRoutes];
+const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, settingsAppRoutes, ...appRoutes];
 
 const authProtectedRoutes = [dashboardRoutes, audienceRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);

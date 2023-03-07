@@ -41,9 +41,10 @@ import {
     getCurrentChat,
     updateContactName,
 } from '../../services/api';
-import { convertToPhone } from '../../utils/conversions';
+import { convertoToFullStringDate, convertToFullDate, convertToPhone } from '../../utils/conversions';
+import { SearchInput } from '../../pages/apps/Audience/styles';
 
-function OpenContactModal({ number, name, contact, pfp, userIns }) {
+function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
     const [isSelectSequence, setIsSelectSequence] = useState('');
     const [selectedTags, setSelectedTags] = useState([]);
     const [tagsSelect, setTagsSelect] = useState([]);
@@ -65,7 +66,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns }) {
     };
 
     const handleAddTag = useCallback(async () => {
-        await createTagForContact(userToken, number, tag).then(() => console.log('foi'));
+        await createTagForContact(userToken, number, tag);
     }, [tag, selectedTags]);
 
     const handleRemove = (tagName) => {
@@ -79,7 +80,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns }) {
             });
         });
 
-        await deleteTagForContact(userToken, number, tagForDelete).then(() => console.log('apagado'));
+        await deleteTagForContact(userToken, number, tagForDelete);
     };
 
     useEffect(() => {
@@ -135,10 +136,6 @@ function OpenContactModal({ number, name, contact, pfp, userIns }) {
         getInfo();
     }, [chatId]);
 
-    useEffect(() => {
-        console.log(contactInfo);
-    }, [contactInfo]);
-
     const handleGetMsgs = async () => {
         if (chatId !== null) {
             let data = await getMessages({ chatId: chatId });
@@ -174,7 +171,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns }) {
                         </ContainerLeftPanelUserDetails>
                         <ContainerLeftPanelUserDetails>
                             <AiOutlineClockCircle size={15} />
-                            Tempo do assinante: Feb 09 2023, 8:47
+                            Tempo do assinante: {convertToFullDate(createdAt)}
                         </ContainerLeftPanelUserDetails>
                         <ContainerLeftPanelUserDetails>
                             <BsPeopleFill size={15} />

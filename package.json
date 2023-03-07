@@ -39,6 +39,7 @@
         "react-flatpickr": "^3.9.1",
         "react-floating-button-menu": "^2.1.1",
         "react-h5-audio-player": "^3.8.6",
+        "react-horizontal-scrolling-menu": "^3.2.5",
         "react-icons": "^4.7.1",
         "react-input-emoji": "^4.3.0",
         "react-input-mask": "^2.0.4",
