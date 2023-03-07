@@ -1,419 +1,455 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Card, Table, Row, Form, Col, CardBody, FormGroup, Input } from 'reactstrap';
 import classNames from 'classnames';
-import { Button, Card, Table, Form, Row, Col } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-const Messages = ({ messages }) => {
+// types
+const Projects = ({ projects }) => {
     return (
         <>
-            <Row>
-                <div className="grid text-right">
-                    <Button variant="secondary" className="btn btn-md" style={{borderRadius: "6px 0 0 6px", padding: "12px 28px"}}> Campos do Usuário </Button>
-                    <Button variant="secondary" className="btn btn-md" style={{borderRadius: "0 6px 6px 0", padding: "12px 28px"}}> Campos do Robô </Button>
-                </div>
-                <div className="grid text-end">
-                    <Button variant="success" className="g-col-4 btn-lg" style={{ width: "100px", justifyContent: "space-around", alignItems: "center"}}> <i className="uil uil-plus"></i> </Button>
-                </div>
-            </Row>
+            <div className="grid text-end">
+                <Button variant="success" className="btn btn-lg" style={{ width: "100px",  justifyContent: "space-around", alignItems: "center"}}> <i className="uil uil-plus"></i> </Button>
+            </div>
             <br></br>
             <ul className="list-unstyled">
                 <Card>
-                <Card.Body>
+                <CardBody>
                     <Table className="mb-0" responsive>
                         <thead>
                             <tr>
                                 <th scope="row">Nome</th>
                                 <th>Descrição</th>
                                 <th></th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">ajuda_cliente</th>
-                                <td>Texto</td>
+                                <th scope="row">01/12</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">cidade_cliente</th>
-                                <td>Texto</td>
+                                <th scope="row">01/13</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">cor_blusa</th>
-                                <td>Texto</td>
+                                <th scope="row">02/12</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">data_pedido</th>
-                                <td>Texto</td>
+                                <th scope="row">24/11_GeralDepi</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">data_reagendamento</th>
-                                <td>Texto</td>
+                                <th scope="row">27/11/2022</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">data_retorno</th>
-                                <td>Texto</td>
+                                <th scope="row">29/11</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">dia_da_semana</th>
-                                <td>Texto</td>
+                                <th scope="row">2_por_R$199,90</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">dúvida</th>
-                                <td>Texto</td>
+                                <th scope="row">2xreag</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled />
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">dúvida_cliente</th>
-                                <td>Texto</td>
+                                <th scope="row">30/11</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">endereço_cliente</th>
-                                <td>Texto</td>
+                                <th scope="row">30/12</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">horário_recebido</th>
-                                <td>Texto</td>
+                                <th scope="row">30/13</th>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled />
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">método_de_pgto</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">motivo_cancelamento</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">pedido foi entregue?</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Qtd_amarela</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Qtd_azul</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Qtd_depilatta</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Qtd_parcelas</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Resposta_recuperação</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">tamanho_blusa</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">tamanho_cinta</th>
-                                <td>Texto</td>
                                 <td>
-                                    <Form.Group as={Row} className="mb-3">
+                                    <FormGroup as={Row} className="mb-3">
                                         <Col lg={10}>
-                                            <Form.Control type="text" id="simpleinput" placeholder="Digite aqui..." />
+                                            <Input type="text" id="simpleinput" placeholder="Digite aqui..." disabled/>
                                         </Col>
-                                    </Form.Group>
+                                    </FormGroup>
                                 </td>
                                 <td>
                                     <li className="list-inline-item pe-1">
+                                        <Button className="btn btn-light btn-md">
+                                            <i className="uil uil-edit"></i>
+                                        </Button>
                                         <Button className='btn btn-light btn-md'>
-                                        <i className="uil-trash-alt"></i>
+                                            <i className="uil-trash-alt"></i>
                                         </Button>
                                     </li>
                                 </td>
                             </tr>
                         </tbody>
                     </Table>
-                </Card.Body>
+                </CardBody>
             </Card>
             </ul>
         </>
     );
 };
 
-export default Messages;
+export default Projects;

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Card, Table, Form, Col, Row, Button } from 'reactstrap';
+import { Card, Table, Form, Col, Row, Button, CardBody } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 // types
@@ -15,7 +15,7 @@ const Files = ({ files }) => {
             <br></br>
             <ul className="list-unstyled">
                 <Card>
-                <Card.Body>
+                <CardBody>
                     <Table className="mb-0" responsive>
                         <thead>
                             <tr>
@@ -28,7 +28,7 @@ const Files = ({ files }) => {
                     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                         Sem dados
                     </div>
-                </Card.Body>
+                </CardBody>
             </Card>
             </ul>
         </>

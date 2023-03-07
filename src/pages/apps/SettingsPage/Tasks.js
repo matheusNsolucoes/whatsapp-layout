@@ -1,10 +1,8 @@
 import React from 'react';
-import { Card, Row, Col, Button, Table, Form } from 'reactstrap';
+import { Card, Row, Col, Button, Table, Form, Input, CardBody } from 'reactstrap';
 
 // types
 const Tasks = ({ tasks }) => {
-    const totalTasks = tasks.length;
-
     return (
         <>
             <Row>
@@ -12,7 +10,7 @@ const Tasks = ({ tasks }) => {
                     <div className="grid text-end">
                         <Button variant="success" className="btn btn-lg" style={{ width: "100px"}}> + </Button>
                     </div>
-                    <Form.Check type="checkbox" id="checkmeout" label="Mostrar o nome do admin (atendente) nas mensagens enviadas pelo Bate Papo?"/>
+                    <Input type="checkbox" id="checkmeout" label="Mostrar o nome do admin (atendente) nas mensagens enviadas pelo Bate Papo?"/>
                     
                 </div>
             </Row>
@@ -20,7 +18,7 @@ const Tasks = ({ tasks }) => {
             <br></br>
             <ul className="list-unstyled">
                 <Card>
-                <Card.Body>
+                <CardBody>
                     <Table className="mb-0" responsive>
                         <thead>
                             <tr>
@@ -40,26 +38,26 @@ const Tasks = ({ tasks }) => {
                             <tr>
                                 <th scope="row">Marcos Santos</th>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
                                     <li className="list-inline-item pe-1">
-                                        <Form.Check aria-label="option 1"/>
+                                        <Input aria-label="option 1"/>
                                         <Button className="btn btn-light btn-md">
                                             <i className="bi-sliders"></i>
                                         </Button>
@@ -67,7 +65,7 @@ const Tasks = ({ tasks }) => {
                                 </td>
                                 <td className="grid text-center">
                                     <li className="list-inline-item pe-1">
-                                        <Form.Check aria-label="option 1"/>
+                                        <Input aria-label="option 1"/>
                                         <Button className="btn btn-light btn-md">
                                             <i className="bi-sliders"></i>
                                         </Button>
@@ -82,26 +80,26 @@ const Tasks = ({ tasks }) => {
                             <tr>
                                 <th scope="row">Geovana Venâncio Freitas</th>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
                                     <li className="list-inline-item pe-1">
-                                        <Form.Check aria-label="option 1"/>
+                                        <Input aria-label="option 1"/>
                                         <Button className="btn btn-light btn-md">
                                             <i className="bi-sliders"></i>
                                         </Button>
@@ -109,7 +107,7 @@ const Tasks = ({ tasks }) => {
                                 </td>
                                 <td className="grid text-center">
                                     <li className="list-inline-item pe-1">
-                                        <Form.Check aria-label="option 1"/>
+                                        <Input aria-label="option 1"/>
                                         <Button className="btn btn-light btn-md">
                                             <i className="bi-sliders"></i>
                                         </Button>
@@ -124,26 +122,26 @@ const Tasks = ({ tasks }) => {
                             <tr>
                                 <th scope="row">Logzz - Nilton</th>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
-                                    <Form.Check aria-label="option 1" />
+                                    <Input aria-label="option 1" />
                                 </td>
                                 <td className="grid text-center">
                                     <li className="list-inline-item pe-1">
-                                        <Form.Check aria-label="option 1"/>
+                                        <Input aria-label="option 1"/>
                                         <Button className="btn btn-light btn-md">
                                             <i className="bi-sliders"></i>
                                         </Button>
@@ -151,7 +149,7 @@ const Tasks = ({ tasks }) => {
                                 </td>
                                 <td className="grid text-center">
                                     <li className="list-inline-item pe-1">
-                                        <Form.Check aria-label="option 1"/>
+                                        <Input aria-label="option 1"/>
                                         <Button className="btn btn-light btn-md" style={{display: "inline-block"}}>
                                             <i className="bi-sliders"></i>
                                         </Button>
@@ -165,7 +163,7 @@ const Tasks = ({ tasks }) => {
                             </tr>
                         </tbody>
                     </Table>
-                </Card.Body>
+                </CardBody>
             </Card>
             </ul>
         </>

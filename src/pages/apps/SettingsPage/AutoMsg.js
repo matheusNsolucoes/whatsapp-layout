@@ -1,6 +1,6 @@
 import React from "react"
 import Select from 'react-select';
-import { Row, Col, Card, Form, Button, Dropdown, ButtonGroup, DropdownButton } from 'reactstrap';
+import { Row, Col, Card, Form, Input, Button, Dropdown, ButtonGroup, DropdownButton, DropdownToggle, DropdownMenu, DropdownItem, FormGroup } from 'reactstrap';
 
 const AutoMsg = () => {
     return (
@@ -61,7 +61,7 @@ const AutoMsg = () => {
                     <br></br>
                     <h5>Texto a cada 3 botões:</h5>
                     <div style={{display: "flex", position: "relative"}}>
-                        <Form.Group as={Row}>
+                        <FormGroup as={Row}>
                             <Row md={12}>
                                 <ul>
                                     <Button className="btn btn-light">
@@ -75,22 +75,22 @@ const AutoMsg = () => {
                                     </Button>
                                     <ButtonGroup>
                                         <Dropdown>
-                                            <Dropdown.Toggle variant="light" className="cursor-pointer">
+                                            <DropdownToggle variant="light" className="cursor-pointer">
                                                 Selecione <i className="uil-arrow-down"></i>
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                                <Dropdown.Item href="#">Primeiro Nome</Dropdown.Item>
-                                                <Dropdown.Item href="#">Sobrenome</Dropdown.Item>
-                                                <Dropdown.Item href="#">Nome completo</Dropdown.Item>
-                                            </Dropdown.Menu>
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                <DropdownItem href="#">Primeiro Nome</DropdownItem>
+                                                <DropdownItem href="#">Sobrenome</DropdownItem>
+                                                <DropdownItem href="#">Nome completo</DropdownItem>
+                                            </DropdownMenu>
                                         </Dropdown>
                                     </ButtonGroup>
                                 </ul>
                             </Row>
                             <Col lg={10}>
-                                <Form.Control as="textarea" rows={5} id="example-textarea" />
+                                <Input as="textarea" rows={5} id="example-textarea" />
                             </Col>
-                        </Form.Group>
+                        </FormGroup>
                     </div>
 
                 </Col>

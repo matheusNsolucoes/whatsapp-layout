@@ -25,7 +25,7 @@ const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
 const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
 const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
 const Audience = React.lazy(() => import('../pages/apps/Audience/index'))
-const Settings = React.lazy(() => import("../pages/apps/Settings/index"))
+const Settings = React.lazy(() => import("../pages/apps/SettingsPage/index"))
 const Transmission = React.lazy(() => import( '../pages/apps/Transmission/index'));
 
 // pages
