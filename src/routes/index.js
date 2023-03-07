@@ -26,6 +26,7 @@ const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
 const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
 const Audience = React.lazy(() => import('../pages/apps/Audience/index'))
 const Settings = React.lazy(() => import("../pages/apps/Settings/index"))
+const Transmission = React.lazy(() => import( '../pages/apps/Transmission/index'));
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -124,7 +125,7 @@ const emailAppRoutes = {
     path: '/transmission',
     name: 'Transmissão',
     icon: FeatherIcon.Send,
-    component: CalendarApp,
+    component: Transmission,
     route: PrivateRoute,
     roles: ['Admin'],
 };
@@ -261,7 +262,7 @@ const flattenRoutes = (routes) => {
 };
 
 // All routes
-const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, settingsAppRoutes, ...appRoutes];
+const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, settingsAppRoutes, emailAppRoutes, ...appRoutes];
 
 const authProtectedRoutes = [dashboardRoutes, audienceRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
