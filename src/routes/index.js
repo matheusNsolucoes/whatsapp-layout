@@ -15,6 +15,7 @@ const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
+const Campaign = React.lazy(() => import('../pages/apps/Campaign'))
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
 const EmailCompose = React.lazy(() => import('../pages/apps/Email/Compose'));
@@ -110,10 +111,19 @@ const audienceRoutes = {
 // apps
 
 const calendarAppRoutes = {
-    path: '/campaign',
-    name: 'Campanha',
+    path: '/calendar',
+    name: 'Calendario',
     icon: FeatherIcon.Mail,
     component: CalendarApp,
+    route: PrivateRoute,
+    roles: ['Admin'],
+};
+
+const campaignAppRoutes = {
+    path: '/campaign',
+    name: 'Campanha',
+    icon: FeatherIcon.Book,
+    component: Campaign,
     route: PrivateRoute,
     roles: ['Admin'],
 };
@@ -198,6 +208,7 @@ const appRoutes = [
     calendarAppRoutes,
     emailAppRoutes,
     chatAppRoutes,
+    campaignAppRoutes,
     taskAppRoutes,
     fluxAppRoutes,
     settingsAppRoutes,
