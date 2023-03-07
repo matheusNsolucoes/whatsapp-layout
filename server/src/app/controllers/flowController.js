@@ -21,31 +21,35 @@ const newFlow = async (req, res) => {
 } 
 
 const getFlows = async (req, res) => {
-    const { userToken } = req.body;
-    console.log(userToken)
+    try {
+      const { data } = req.body;
+      console.log(data)
 
-    User.find({ userId: userToken }, (err, arr) => {
-        arr.forEach((items) => {
-          flow = items.flowList;
-    
-          let array = flow.map((item) => {
-            return {
-              name: item.name,
-              execution: item.execution,
-              ctr: item.ctr,
-              createdAt: item.createdAt
-            };
+      User.find({ userId: data }, (err, arr) => {
+          arr.forEach((items) => {
+            flow = items.flowList;
+      
+            let array = flow.map((item) => {
+              return {
+                name: item.name,
+                execution: item.execution,
+                ctr: item.ctr,
+                createdAt: item.createdAt
+              };
+            });
+            console.log(JSON.stringify(array))
+            return res.json(array);
           });
-          console.log(JSON.stringify(array))
-          return res.json(array);
         });
-      });
+    } catch (error) {
+      console.log(error.message)
+    }
 }
 
 const getOneFlow = async (req, res)  => {
-    const { user_token, nameFlow } = req.body;
+    const { userToken, nameFlow } = req.body;
 
-   const flowFinded = await User.find({userId: user_token},{flowList: {$elemMatch: {name: nameFlow}}});
+   const flowFinded = await User.find({userId: userToken},{flowList: {$elemMatch: {name: nameFlow}}});
 
    if(!flowFinded) res.status(404)
 

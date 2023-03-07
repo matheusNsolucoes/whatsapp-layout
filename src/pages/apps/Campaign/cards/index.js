@@ -20,12 +20,12 @@ import {BiTrash} from 'react-icons/bi';
 import {FiEdit, FiLink} from 'react-icons/fi';
 
 
-function CampaignCard() {
+function CampaignCard({nameCampaign}) {
     return (
         <Container>
             <CardHeader>
                 <CardName>
-                    <span>Teste</span>
+                    <span>{nameCampaign}</span>
                     <CardNameFlow>
                         Não entrou relatorio
                     </CardNameFlow>
