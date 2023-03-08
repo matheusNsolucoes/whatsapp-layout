@@ -9,6 +9,7 @@ const upload = require("../utils/upload");
 const flow = require("../controllers/flowController");
 const flowMap = require("../controllers/flowMapsController");
 const path = require("path")
+const users = require("../controllers/usersController");
 
 const route = express.Router();
 
@@ -61,5 +62,11 @@ route.use(
   "/files",
   express.static(path.resolve(__dirname, "..", "..", "..", "tmp", "uploads"))
 );
+
+//User login
+
+route.post("/account/register", users.newUser);
+route.post("/account/delete", users.deleteUser);
+route.post("/account/login", users.loginUser);
 
 module.exports = (app) => app.use("/", route);

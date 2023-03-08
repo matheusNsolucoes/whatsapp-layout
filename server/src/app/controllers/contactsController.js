@@ -108,14 +108,16 @@ const blockUser = async (req, res) => {
   }
 };
 
-const consultContacts = async (req, res) => {
+
+const consultContacts = async  (req, res) => {
   const userToken = req.headers["authentication"];
+  const userId = req.query.userId;
 
   User.find({ userId: userToken }, (err, arr) => {
     // puxa todos os contatos de determinado usuário, busca através da identificação do usuário (user_token)
     arr.forEach((items) => {
       contacts = items.contactList;
-
+      
       let array = contacts.map((item) => {
         return {
           number: item.phoneNumber,

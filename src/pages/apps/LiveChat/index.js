@@ -170,6 +170,7 @@ function ChatPage({ match }) {
         const getAllContacts = async () => {
             let data = await getContacts({
                 userToken: localStorage.getItem('userToken'),
+                userId: userIns
             });
 
             let groupData = await getGroups({
@@ -183,19 +184,11 @@ function ChatPage({ match }) {
     }, []);
 
     useEffect(() => {
+        console.log(contacts)
+
         // hook que busca a foto de perfil do usuário da aplicação
         const userPicture = () => {
             if (userIns !== '') {
-                contacts.forEach(async (contact) => {
-                    let data = await getContactPic({
-                        userId: userIns,
-                        contactNumber: contact.number,
-                    });
-
-                    contact.pfp = data.data;
-                    setNewMessageFlag((prev) => !prev);
-                })
-
                 groups.forEach(async (group) => {
                     let data = await getContactPic({
                         userId: userIns,
