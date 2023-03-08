@@ -49,7 +49,7 @@ const SettingsPage = () => {
     `;
 
     return (
-        <Card>
+        <Card className="settings-card">
             <CardBody>
                 <div className="overflow-hidden" style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
                     <ScrollBtn onClick={() => scroll(-500)}>{`<`}</ScrollBtn>
