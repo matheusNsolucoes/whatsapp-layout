@@ -60,23 +60,7 @@ function UserPanel({ match }) {
         modalState: { visible },
         openModal,
     } = useModalContext();
-
-    useEffect(() => {
-        const userPicture = () => {
-            if (userIns !== '') {
-                contacts.forEach(async (contact) => {
-                    let data = await getContactPic({
-                        userId: userIns,
-                        contactNumber: contact.number,
-                    });
-
-                    contact.pfp = data.data;
-                });
-            }
-        };
-        userPicture();
-    }, [contacts]);
-
+    
     useEffect(() => {
         // pega os contatos do usuário
         const loadContacts = async () => {
@@ -87,8 +71,6 @@ function UserPanel({ match }) {
         };
         loadContacts();
     }, []);
-
-    useEffect(() => {}, [searchBox]);
 
     useEffect(() => {
         const getAlltagsforUser = async () => {
