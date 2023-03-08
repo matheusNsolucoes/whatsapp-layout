@@ -172,6 +172,7 @@ function ChatPage({ match }) {
         const getAllContacts = async () => {
             let data = await getContacts({
                 userToken: localStorage.getItem('userToken'),
+                userId: userIns
             });
 
             let groupData = await getGroups({
@@ -185,6 +186,8 @@ function ChatPage({ match }) {
     }, []);
 
     useEffect(() => {
+        console.log(contacts)
+
         // hook que busca a foto de perfil do usuário da aplicação
         const userPicture = () => {
             if (userIns !== '') {

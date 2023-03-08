@@ -15,7 +15,7 @@ import {
 
 export const loginUser = (username, password) => ({
     type: LOGIN_USER,
-    payload: { username, password },
+    payload: { username, password }
 });
 
 export const loginUserSuccess = (user) => ({
@@ -28,10 +28,12 @@ export const loginUserFailed = (error) => ({
     payload: error,
 });
 
-export const registerUser = (fullname, email, password) => ({
-    type: REGISTER_USER,
-    payload: { fullname, email, password },
-});
+export const registerUser = (fullname, email, password) => {
+    // ({
+    //     type: REGISTER_USER,
+    //     payload: { fullname, email, password }})
+    //newUser(fullname, email, password);
+}
 
 export const registerUserSuccess = (user) => ({
     type: REGISTER_USER_SUCCESS,

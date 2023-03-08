@@ -104,6 +104,7 @@ const blockUser = async (req, res) => {
     }
 };
 
+
 const consultContacts = async (req, res) => {
     const userToken = req.headers['authentication'];
 

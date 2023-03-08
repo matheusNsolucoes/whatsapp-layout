@@ -451,10 +451,28 @@ export const createFlowMap = async (data, userToken, flowName) => {
 };
 
 export const getFlowMap = async (userToken, flowName) => {
-    try {
-        console.log(`Dados chegam aqui: ${(userToken, flowName)}`);
-        return await axios.post(`${url}/flow/getmap`, { userToken, flowName });
-    } catch (error) {
-        console.log('Error while calling createFlowMap API', error);
-    }
-};
+  try {
+    console.log(`Dados chegam aqui: ${userToken, flowName}`)
+    return await axios.post(`${url}/flow/getmap`, {userToken, flowName})
+  } catch (error) {
+    console.log("Error while calling createFlowMap API", error);
+  }
+}
+
+//Login User
+
+export const newUser = async (fullname, email, password)=>{
+  try{
+    return await axios.post(`${url}/account/register`,{fullname, email, password})
+  }catch (error){
+    console.log("Error while calling createFlowMap API", error);
+  }
+}
+
+export const authUser = async (email, password)=>{
+  try{
+    return await axios.post(`${url}/account/login`, {email, password});
+  }catch (error){
+    console.log("Error while calling authUser API", error);
+  }
+}

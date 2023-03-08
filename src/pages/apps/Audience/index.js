@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Container, ProfilePicture, ButtonsRow, TopButtons, FilterButton, SearchWrapper, SearchInput, Tag } from './styles';
+import {
+    Container,
+    ProfilePicture,
+    ButtonsRow,
+    TopButtons,
+    FilterButton,
+    SearchWrapper,
+    SearchInput,
+    Tag,
+} from './styles';
 import ReactPaginate from 'react-paginate';
 import CheckboxGroup from 'react-checkbox-group';
 import { convertToFullDate, convertToPhone } from '../../../utils/conversions';
@@ -16,7 +25,7 @@ import {
     BsFilterRight,
 } from '../../../styles/Icons';
 import NewUserModal from '../../../components/NewUserModal';
-import { addNewContact } from '../../../services/api';
+import { addNewContact, getContactPic } from '../../../services/api';
 import OpenContactModal from '../../../components/OpenContactModal';
 import PageTitle from '../../../components/PageTitle';
 import { Col, Row } from 'reactstrap';
@@ -51,7 +60,7 @@ function UserPanel({ match }) {
         modalState: { visible },
         openModal,
     } = useModalContext();
-
+    
     useEffect(() => {
         // pega os contatos do usuário
         const loadContacts = async () => {
@@ -62,8 +71,6 @@ function UserPanel({ match }) {
         };
         loadContacts();
     }, []);
-
-    useEffect(() => {}, [searchBox]);
 
     useEffect(() => {
         const getAlltagsforUser = async () => {
