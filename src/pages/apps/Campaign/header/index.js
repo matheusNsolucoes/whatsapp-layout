@@ -36,7 +36,7 @@ function CampaignHeader() {
     //     name: 
 
     //   }
-
+// vai
       const handleReport = async () => {
         // Cria uma planilha usando a biblioteca XLSX
         const spreadsheet = XLSX.utils.json_to_sheet(compaigns);
