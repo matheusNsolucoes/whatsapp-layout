@@ -29,6 +29,7 @@ function CampaignHeader() {
     //   compaigns.map((co) => {
     //     nameCampaign = co
     //   })
+    //oi
 
     // console.log(`no header: ${JSON.stringify(compaigns)}`)
 
