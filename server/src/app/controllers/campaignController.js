@@ -61,7 +61,7 @@ const updateCampaign = async (req, res) => {
         const {nameCampaign, userToken, newName} = req.body;
         console.log(`dados do body: ${nameCampaign} ${userToken}`)
 
-        const user = await User.findOne({ userId: userToken, 'campaigns.name': nameCampaign });
+        const user = await User.findOne({ userId: userToken, 'campaigns.name': newName });
         if (user) {
             console.log('Já existe')
             return;

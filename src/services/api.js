@@ -233,8 +233,7 @@ export const updateCampaigns = async (nameCampaign, userToken, newName) => {
 export const deleteCampaign = async (nameCampaign, userToken) => {
 
     try {
-        const { data } = await axios.delete(`${url}/campaign/delete`, {nameCampaign, userToken});
-        return data;
+         await axios.delete(`${url}/campaign/delete`, {data: {nameCampaign, userToken}});
     } catch (error) {
         console.log('Erro aqui', error.response.data.message);
     }

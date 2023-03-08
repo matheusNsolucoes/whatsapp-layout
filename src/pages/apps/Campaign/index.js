@@ -17,11 +17,7 @@ const Campaign = () => {
         }
         getAllCompaigns()
     }, [])
-
-    console.log(campaigns)
-    Promise.all(campaigns.map((cam) => {
-        console.log(cam.name)
-    }))
+    
     // useEffect(() => {
     //     const getFlowsss = async () => {
     //         const {data} = await getOneFlow({userToken, nameFlow: 'chip'});
@@ -48,6 +44,9 @@ const Campaign = () => {
             <CampaignHeader />
             <PageContent>
                 <ContentContainer>
+                {campaigns.campaigns.map((camp, index) => (
+                        <CampaignCard key={index} nameCampaign={camp.name} flows={camp}/>
+                    ))}
                 </ContentContainer>
             </PageContent>
         </div>
