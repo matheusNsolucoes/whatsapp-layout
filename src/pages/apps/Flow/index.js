@@ -604,7 +604,7 @@ function Flow({ match }) {
 
     useEffect(() => {
         const getFlowForUser = async () => {
-            const userToken = userIns;
+            const userToken = localStorage.getItem("userToken");
             const flowName = flowId;
             const { data } = await getFlowMap(userToken, flowName);
             const InJason = JSON.stringify(data);
