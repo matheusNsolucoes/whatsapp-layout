@@ -24,11 +24,7 @@ import { useCookies } from 'react-cookie';
 const UserProfile = () => {
     const [allIns, setIns] = useState([]); // instância ou "ID" dos usuários
     const [cookies, setCookie] = useCookies('[userIns]');
-
-    const {
-        modalState: { visible },
-        openModal,
-    } = useModalContext();
+    const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         // lista as instâncias do usuário dono do token requerido do localStorage
@@ -48,7 +44,7 @@ const UserProfile = () => {
 
     return (
         <React.Fragment>
-            {visible && <QRCodeModal />}
+            {isModalOpen && <QRCodeModal onClick={() => setModalOpen(!isModalOpen)} />}
             <div className="media user-profile mt-2 mb-2">
                 <img src={profilePic} className="avatar-sm rounded-circle mr-2" alt="Shreyu" />
                 <img src={profilePic} className="avatar-xs rounded-circle mr-2" alt="Shreyu" />
@@ -93,7 +89,7 @@ const UserProfile = () => {
                         </Link>
                         <div
                             style={{ cursor: 'pointer' }}
-                            onClick={() => openModal()}
+                            onClick={() => setModalOpen(!isModalOpen)}
                             className="dropdown-item notify-item">
                             <TbQrcode className="icon-dual icon-xs mr-2" />
                             <span>QR Code</span>

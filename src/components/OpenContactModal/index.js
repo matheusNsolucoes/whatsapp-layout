@@ -116,7 +116,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
             setTagsSelect(tags);
             tags.map((tag) => {
                 tag.tags.map((item) => {
-                    console.log(JSON.stringify(item));
+                    // jooj
                 });
             });
         };

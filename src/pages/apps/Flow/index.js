@@ -587,14 +587,6 @@ function Flow({ match }) {
             const flow = rfInstance.toObject();
             localStorage.setItem('ex', JSON.stringify(flow));
             try {
-                // await createFlow({
-                //   name: 'teste Final',
-                //   execution: 68,
-                //   ctr: 25,
-                //   user_token: 'mapas'
-                // })
-                //  const {data} = await getFlowMap('mapas', 'teste Final');
-                //  console.log(JSON.stringify(data))
                 const { data, status } = await createFlowMap(flow, 'mapas', 'teste Final');
             } catch (error) {
                 console.log(error);
