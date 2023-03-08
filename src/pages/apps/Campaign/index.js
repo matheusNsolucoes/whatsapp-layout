@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useModalContext } from "../../../modal.context";
 import { createCampaign, getFlows, getOneFlow, getCampaigns } from "../../../services/api";
 import CampaignCard from "./cards";
 import CampaignHeader from "./header";
+import CamapignModal from "./modal";
 import { ContentContainer, PageContent } from "./styles";
 
 const Campaign = () => {
@@ -17,6 +19,12 @@ const Campaign = () => {
         }
         getAllCompaigns()
     }, [])
+
+    campaigns.map((camp) => {
+        camp.flow.map((fa) => {
+            console.log(`aqui: ${JSON.stringify(fa)}`)
+        })
+    })
     
     // useEffect(() => {
     //     const getFlowsss = async () => {
@@ -37,16 +45,26 @@ const Campaign = () => {
     //     createCampaignF()
     // }, [])
 
-
+    const {
+        modalState: { visible },
+        openModal,
+      } = useModalContext();
 
     return (
         <div>
             <CampaignHeader />
             <PageContent>
                 <ContentContainer>
-                {campaigns.campaigns.map((camp, index) => (
-                        <CampaignCard key={index} nameCampaign={camp.name} flows={camp}/>
+                {visible ? (
+                    <CamapignModal />
+                ): (
+                  <>
+                    {campaigns.map((camp, index) => (
+                        <CampaignCard key={index} nameCampaign={camp.name} flows={camp.flow}/>
                     ))}
+                  </>  
+                )}
+                
                 </ContentContainer>
             </PageContent>
         </div>

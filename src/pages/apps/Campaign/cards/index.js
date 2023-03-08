@@ -28,6 +28,10 @@ function CampaignCard({nameCampaign, flows}) {
 
     const userToken = localStorage.getItem('userToken')
 
+    flows.map((fl) => {
+        console.log(JSON.stringify(fl), 'no card')
+    })
+
     const handleEditClick = (name) => {
     setEdit(true);
     setEditedName(name);
@@ -62,8 +66,11 @@ function CampaignCard({nameCampaign, flows}) {
                 onChange={(event) => setInputValue(event.target.value)}
             />
             ) : (
-            <CardNameFlow>{nameCampaign}</CardNameFlow>
-            )}
+                <p>{nameCampaign}</p>
+                )}
+                {flows.map((item, index) => (
+                    <CardNameFlow key={index}>{item.name}</CardNameFlow>
+                ))}
         </CardName>
         <CardIcons>
             {!edit && (
@@ -106,17 +113,19 @@ function CampaignCard({nameCampaign, flows}) {
         </CardIconLink>
         </CardIcon>
         <CardFooter>
-        <CardInfo>
+        {flows.map((info, index) => (
+            <CardInfo key={index}>
             <CardInfoBlock>
             <CardInfoData>Participantes:</CardInfoData>
             </CardInfoBlock>
             <CardInfoBlock>
-            <CardInfoData>Execuções:</CardInfoData>
+            <CardInfoData>Execuções: {info.execution}</CardInfoData>
             </CardInfoBlock>
             <CardInfoBlock>
-            <CardInfoData>ctr:</CardInfoData>
+            <CardInfoData>ctr: {info.ctr}</CardInfoData>
             </CardInfoBlock>
         </CardInfo>
+        ))}
         <ButtonLink>Copiar Link</ButtonLink>
         </CardFooter>
     </Container>

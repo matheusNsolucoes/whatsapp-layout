@@ -27,7 +27,7 @@ const createCampaign = async (req, res) => {
             }
         )
             
-        res.send({ message: 'Campanha criada com sucesso!' });
+        res.status(200).send({ message: 'Campanha criada com sucesso!' });
 
     } catch (error) {
         console.log(error.message);
@@ -48,7 +48,7 @@ const getCampaigns = async (req, res) => {
 
         const campaigns = user.campaigns;
 
-        res.json({ campaigns });
+        res.send(campaigns);
 
     } catch (error) {
         console.log(error.message);
