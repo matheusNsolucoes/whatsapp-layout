@@ -22,6 +22,7 @@ export const ContainerLeftPanel = styled.div`
     min-width: 250px;
     padding: 16px;
     height: 100%;
+    max-width: 300px;
     position: relative;
     background-color: ${theme.mainBackground};
 `;
@@ -45,11 +46,11 @@ export const ContainerLeftPanelUserDetails = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
     font-size: 12px;
     line-height: 18px;
     gap: 10px;
     color: #777;
+    text-align: left;
 `;
 
 export const ButtonStartChat = styled.a`

@@ -189,7 +189,7 @@ export const ImportContacts = styled.input`
 `;
 
 export const TopButtons = styled.a`
-    color: #fff;
+    color: #000;
     cursor: pointer;
     box-shadow: ${theme.boxShadow};
     background-color: ${theme.mainBackground};
@@ -256,3 +256,7 @@ export const SearchInput = styled.input`
     margin-left: 10px;
     font-size: 12px;
 `;
+
+export const Tag = styled.td`
+    padding: 0px 0.75rem !important;
+`

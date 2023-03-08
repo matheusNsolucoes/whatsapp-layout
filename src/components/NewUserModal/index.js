@@ -5,11 +5,10 @@ import InputMask from 'react-input-mask';
 import { addNewContact } from '../../services/api';
 import { AiOutlineInfoCircle } from '../../styles/Icons';
 
-function NewUserModal({ match }) {
+function NewUserModal({ userIns }) {
     const [contactNumber, setContactNumber] = useState(0);
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
-    const userIns = match.params.userIns;
 
     const {
         modalState: { message, visible },
