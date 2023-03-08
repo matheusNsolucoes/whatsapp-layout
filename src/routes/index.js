@@ -26,6 +26,9 @@ const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
 const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
 const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
 const Audience = React.lazy(() => import('../pages/apps/Audience/index'))
+const Settings = React.lazy(() => import("../pages/apps/SettingsPage/index"))
+const Transmission = React.lazy(() => import( '../pages/apps/Transmission/index'));
+const Flow = React.lazy(() => import("../pages/apps/Flow/index"))
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -133,7 +136,7 @@ const emailAppRoutes = {
     path: '/transmission',
     name: 'Transmissão',
     icon: FeatherIcon.Send,
-    component: CalendarApp,
+    component: Transmission,
     route: PrivateRoute,
     roles: ['Admin'],
 };
@@ -182,19 +185,19 @@ const settingsAppRoutes = {
     path: '/apps/settings',
     name: 'Configurações',
     icon: FeatherIcon.Settings,
-    component: CalendarApp,
+    component: Settings,
     route: PrivateRoute,
     roles: ['Admin'],
 };
 
-const controlAppRoutes = {
-    path: '/apps/plataformcontrol',
-    name: 'Gestão de Plataforma',
-    icon: FeatherIcon.Star,
-    component: CalendarApp,
+const flowAppRoutes = {
+    path: '/apps/constructor/:flowId',
+    name: 'Flow',
+    icon: FeatherIcon.Settings,
+    component: Flow,
     route: PrivateRoute,
     roles: ['Admin'],
-};
+}
 
 const profileAppRoutes = {
     path: '/apps/profile',
@@ -213,7 +216,7 @@ const appRoutes = [
     taskAppRoutes,
     fluxAppRoutes,
     settingsAppRoutes,
-    controlAppRoutes,
+    flowAppRoutes,
     profileAppRoutes,
 ];
 
@@ -271,7 +274,7 @@ const flattenRoutes = (routes) => {
 };
 
 // All routes
-const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, ...appRoutes];
+const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, settingsAppRoutes, emailAppRoutes, flowAppRoutes, ...appRoutes];
 
 const authProtectedRoutes = [dashboardRoutes, audienceRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);

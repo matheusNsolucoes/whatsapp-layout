@@ -381,6 +381,14 @@ export const updateGroupName = async (data) => {
   user_token: string
 */
 
+export const createFlow = async (data) => {
+    try {
+      return await axios.post(`${url}/flow/create`, {data})
+    } catch (error) {
+      console.log("Error while calling getFlow API", error);
+    }
+  }
+
 /*
   user_token: string,
   nameFlow: string

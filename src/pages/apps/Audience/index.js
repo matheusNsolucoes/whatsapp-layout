@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Container, ProfilePicture, ButtonsRow, TopButtons, FilterButton, SearchWrapper, SearchInput } from './styles';
+import { Container, ProfilePicture, ButtonsRow, TopButtons, FilterButton, SearchWrapper, SearchInput, Tag } from './styles';
 import ReactPaginate from 'react-paginate';
 import CheckboxGroup from 'react-checkbox-group';
 import { convertToFullDate, convertToPhone } from '../../../utils/conversions';
 import { useModalContext } from '../../../modal.context';
 import * as XLSX from 'xlsx';
 import defaultPic from '../../../assets/images/defaultPic.jpg';
-import { getContacts } from '../../../services/api';
+import { getAllTags, getContacts } from '../../../services/api';
 import {
     AiOutlineDownload,
     AiOutlineUpload,
@@ -29,8 +29,10 @@ function UserPanel({ match }) {
     const [modalType, setModalType] = useState('');
     const [numberForModal, setNumberForModal] = useState('');
     const [contactNameModal, setContactNameModal] = useState('');
-    const [contactPfpModal, setContactPfpModal] = useState("");
+    const [contactPfpModal, setContactPfpModal] = useState('');
     const [contactInfo, setContactInfo] = useState('');
+    const [createdAt, setCreatedAt] = useState();
+    const [userTags, setUserTags] = useState([]);
     const fileinput = useRef(null);
 
     const endOffset = itemOffset + 8;
@@ -63,6 +65,14 @@ function UserPanel({ match }) {
 
     useEffect(() => {}, [searchBox]);
 
+    useEffect(() => {
+        const getAlltagsforUser = async () => {
+            const tags = await getAllTags(localStorage.getItem('userToken'));
+            setUserTags(tags[0].tags);
+        };
+        getAlltagsforUser();
+    }, []);
+
     const handleFileChange = async (event) => {
         // responsavel pela função de importação de contatos através de um arquivo excel.
         const file = event.target.files[0];
@@ -76,8 +86,6 @@ function UserPanel({ match }) {
             const array = XLSX.utils.sheet_to_json(worksheet);
             try {
                 array.map(async (files) => {
-                    console.log(`numero: ${files.telefone}, sobrenome: ${files.sobrenome}`);
-
                     await addNewContact({
                         phone_number: files.telefone,
                         contact_name: files.sobrenome,
@@ -88,7 +96,7 @@ function UserPanel({ match }) {
 
                 window.location.reload(false);
             } catch (error) {
-                console.log('erro de importação');
+                window.alert('[!!] Ocorreu um erro ao importar o contato');
             }
         };
 
@@ -122,9 +130,15 @@ function UserPanel({ match }) {
         <Container>
             {visible ? (
                 <>
-                    {modalType === 'createNewContact' && <NewUserModal />}
+                    {modalType === 'createNewContact' && <NewUserModal userIns={userIns} />}
                     {modalType === 'ContatcInfo' && (
-                        <OpenContactModal number={numberForModal} name={contactNameModal} contact={contacts} userIns={userIns} />
+                        <OpenContactModal
+                            number={numberForModal}
+                            name={contactNameModal}
+                            contact={contacts}
+                            userIns={userIns}
+                            createdAt={createdAt}
+                        />
                     )}
                 </>
             ) : (
@@ -179,10 +193,14 @@ function UserPanel({ match }) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td className="cor-cinza">camisa_seleção</td>
-                                            <td className="text-right cor-cinza">645</td>
-                                        </tr>
+                                        {(userTags || []).map((tag) => {
+                                            return (
+                                                <tr>
+                                                    <Tag className="cor-cinza padding-none">{tag.name}</Tag>
+                                                    <Tag className="text-right cor-cinza ">0</Tag>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                                 <div className="text-center">
@@ -301,6 +319,7 @@ function UserPanel({ match }) {
                                                                                   setNumberForModal(contact.number);
                                                                                   setContactNameModal(contact.contact);
                                                                                   setContactPfpModal(contact.pfp);
+                                                                                  setCreatedAt(contact.date);
                                                                               }}>
                                                                               <td className="text-center">
                                                                                   <span>
@@ -344,6 +363,7 @@ function UserPanel({ match }) {
                                                                               setModalType('ContatcInfo');
                                                                               setNumberForModal(contact.number);
                                                                               setContactNameModal(contact.contact);
+                                                                              setCreatedAt(contact.date);
                                                                           }}>
                                                                           <td className="text-center">
                                                                               <span>
