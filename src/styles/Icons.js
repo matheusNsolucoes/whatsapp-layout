@@ -21,10 +21,12 @@ export {
   BsFillFileEarmarkMusicFill,
   BsWhatsapp,
   BsCheckAll,
+  BsCheck2,
   BsListUl,
   BsLightningCharge,
   BsArrowsAngleContract,
   BsArrowsAngleExpand,
+  BsFilterRight
 } from "react-icons/bs";
 export { RiSendPlaneFill } from "react-icons/ri";
 export {
@@ -33,6 +35,7 @@ export {
   MdArrowBackIos,
   MdDownloadForOffline,
 } from "react-icons/md";
+export {FaPen} from "react-icons/fa"
 export { IoDocument, IoClose } from "react-icons/io5";
 export { HiDownload, HiLockClosed, HiOutlineMail } from "react-icons/hi";
 export { MdEmail, MdAdsClick } from "react-icons/md";
