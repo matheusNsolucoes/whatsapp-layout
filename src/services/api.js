@@ -198,6 +198,47 @@ export const deleteTagForUser = async (userToken, tag) => {
     }
 };
 
+// Campaign
+export const createCampaign = async (nameCampaign, flow, userToken) => {
+    console.log(`na requi: ${flow}`)
+    try {
+        const { data } = await axios.post(`${url}/campaign/create`, {nameCampaign, flow, userToken});
+        return data;
+    } catch (error) {
+        console.log('Erro aqui', error.response.data.message);
+    }
+};
+
+export const getCampaigns = async (userToken) => {
+
+    try {
+        return await axios.post(`${url}/campaign/get`, {userToken});
+        
+        
+    } catch (error) {
+        console.log('Erro aqui', error.response.data.message);
+    }
+};
+
+export const updateCampaigns = async (nameCampaign, userToken, newName) => {
+
+    try {
+        const { data } = await axios.put(`${url}/campaign/update`, {nameCampaign, userToken, newName});
+        return data;
+    } catch (error) {
+        console.log('Erro aqui', error.response.data.message);
+    }
+};
+
+export const deleteCampaign = async (nameCampaign, userToken) => {
+
+    try {
+         await axios.delete(`${url}/campaign/delete`, {data: {nameCampaign, userToken}});
+    } catch (error) {
+        console.log('Erro aqui', error.response.data.message);
+    }
+};
+
 // Automation Controllers
 
 export const sendSingleMessage = async (data) => {
@@ -355,11 +396,16 @@ export const createFlow = async (data) => {
 
 export const getFlows = async (data) => {
     try {
-        return await axios.post(`${url}/flow/get`, data);
+        return await axios.post(`${url}/flow/get`, {data});
     } catch (error) {
         console.log('Error while calling getFlow API', error);
     }
 };
+
+/*
+nameFlow: string,
+userToken
+*/
 
 export const getOneFlow = async (data) => {
     try {
