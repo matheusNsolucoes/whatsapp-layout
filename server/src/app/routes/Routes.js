@@ -9,6 +9,8 @@ const upload = require("../utils/upload");
 const flow = require("../controllers/flowController");
 const flowMap = require("../controllers/flowMapsController");
 const tagsContacts = require("../controllers/tagsController");
+const campaign = require("../controllers/campaignController");
+
 const path = require("path")
 const users = require("../controllers/usersController");
 
@@ -37,6 +39,12 @@ route.post("/tags/new", tagsContacts.createTagsForUser)
 route.post("/tags/get", tagsContacts.getAllTags)
 route.put("/tags/update", tagsContacts.updateTagsForUser)
 route.delete("/tags/delete", tagsContacts.deleteTagForUser)
+
+// Users campaign
+route.post("/campaign/create", campaign.createCampaign)
+route.post("/campaign/get", campaign.getCampaigns)
+route.put("/campaign/update", campaign.updateCampaign);
+route.delete("/campaign/delete", campaign.deleteCampaign)
 
 //livechat
 route.post("/livechat/newMessage", livechat.newMessage);

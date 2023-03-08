@@ -17,6 +17,12 @@ const UsersSchema = new mongoose.Schema({
     type: Array,
     default: []
   },
+  campaigns: [
+    {
+      name: String,
+      flow: []
+    }
+  ],
   flowList: [
     {
       name: String,
