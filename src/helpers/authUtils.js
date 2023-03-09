@@ -9,12 +9,14 @@ import { Cookies } from 'react-cookie';
 const isUserAuthenticated = () => {
     
     const user = getLoggedInUser();
-    if (!user) {
+
+    if (user == null) {
         return false;
     }
-
+    
     const decoded = jwtDecode(user.token);
     const currentTime = Date.now() / 1000;
+    console.log(currentTime)
     if (decoded.exp < currentTime) {
         console.warn('access token expired');
         return false;
@@ -22,6 +24,11 @@ const isUserAuthenticated = () => {
         return true;
     }
 };
+
+const auth = () => {
+    // verificar se o usuário existe no banco
+
+}
 
 /**
  * Returns the logged in user

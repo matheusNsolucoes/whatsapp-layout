@@ -2,7 +2,6 @@ const User = require("../models/user");
 
 const newFlow = async (req, res) => {
     const {name, execution, ctr, user_token} = req.body;
-
    
     await User.findOneAndUpdate({userId: user_token}, {
         $push: {

@@ -2,7 +2,7 @@
 import { all, call, put, fork, takeEvery } from 'redux-saga/effects';
 
 import { INIT_MENU, CHANGE_ACTIVE_MENU_FROM_LOCATION } from './constants';
-import { authProtectedRoutes as routes } from '../../routes';
+import { allRoutes as routes } from '../../routes';
 import assignIds from './utils';
 import { initMenuSuccess, changeActiveMenuFromLocationSuccess } from './actions';
 
