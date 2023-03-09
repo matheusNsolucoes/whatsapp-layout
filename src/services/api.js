@@ -138,6 +138,14 @@ export const updateContactName = async (data) => {
     }
 };
 
+export const getNonContacts = async (data) => {
+    try {
+        return await axios.post(`${url}/contacts/getNonContacts`, data)
+    } catch (error) {
+        console.log("Erro")
+    }
+}
+
 // Contacts Tags
 
 export const createTagForContact = async (userToken, contactNumber, tags) => {
@@ -257,6 +265,14 @@ export const sendMessage = async (data) => {
         console.log('Error while calling newMessage API', error);
     }
 };
+
+export const getAllChats = async (data) => {
+    try {
+        return await axios.get(`${url}/livechat/getAllChats?userId=${data.userId}&phoneNumber=${data.from}`);
+    } catch (error) {
+        console.log("error")
+    }
+}
 
 export const sendImage = async (data) => {
     try {

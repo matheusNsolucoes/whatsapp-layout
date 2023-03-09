@@ -17,17 +17,22 @@ import {
     EditInput,
 } from './styles';
 import defaultPic from '../../../../assets/images/defaultPic.jpg';
-import { updateGroupName } from '../../../../services/api';
+import { updateGroupName, updateContactName } from '../../../../services/api';
 import { IoClose, AiOutlineClockCircle, HiOutlineMail, MdAdsClick, FaPen, BsCheck2 } from '../../../../styles/Icons';
-import axios from 'axios';
 import ParticipantsRow from '../../../../components/ParticipantsRow';
 
 function ContactInfoPage(props) {
     const [isEditing, setEditing] = useState(false);
     const [newSubject, setNewSubject] = useState(props.name);
 
-    const finishEdit = async () => {
-        updateGroupName({ newSubject: newSubject, userId: props.userIns, groupId: props.number });
+    const finishEdit = () => {
+        if (props.isGroup) {
+            updateGroupName({ newSubject: newSubject, userId: props.userIns, groupId: props.number });
+        } else {
+            console.log("focker")
+            updateContactName({ name: newSubject, number: props.number });
+        }
+
         setEditing(false);
     };
 
@@ -44,28 +49,23 @@ function ContactInfoPage(props) {
                         currentTarget.src = defaultPic;
                     }}
                 />
-                {props.isGroup ? (
-                    <EditName>
-                        {isEditing ? (
-                            <EditInput>
-                                <EditContactName
-                                    type="text"
-                                    defaultValue={newSubject}
-                                    onChange={(e) => setNewSubject(e.target.value)}
-                                />
-                                <BsCheck2 size={25} onClick={() => finishEdit(false)} />
-                            </EditInput>
-                        ) : (
-                            <>
-                                <ContactName>{newSubject}</ContactName>
-                                <FaPen className="editName" size={25} onClick={() => setEditing(!isEditing)} />
-                            </>
-                        )}
-                    </EditName>
-                ) : (
-                    <ContactName>{props.name}</ContactName>
-                )}
-
+                <EditName>
+                    {isEditing ? (
+                        <EditInput>
+                            <EditContactName
+                                type="text"
+                                defaultValue={newSubject}
+                                onChange={(e) => setNewSubject(e.target.value)}
+                            />
+                            <BsCheck2 size={25} onClick={() => finishEdit(false)} />
+                        </EditInput>
+                    ) : (
+                        <>
+                            <ContactName>{newSubject}</ContactName>
+                            <FaPen className="editName" size={25} onClick={() => setEditing(!isEditing)} />
+                        </>
+                    )}
+                </EditName>
                 <ContactNumber>
                     {props.isGroup == true ? (
                         <p>Grupo · {props.participants.length} Participantes</p>

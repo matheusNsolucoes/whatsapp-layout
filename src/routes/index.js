@@ -91,7 +91,6 @@ const rootRoute = {
     path: '/',
     exact: true,
     component: () => <Redirect to={`/${userIns}/dashboard`} />,
-    route: Route,
 };
 
 // dashboards

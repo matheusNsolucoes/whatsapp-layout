@@ -1,17 +1,17 @@
-const mongoose = require("../../database");
+const mongoose = require('../../database');
 
 const ChatSchema = new mongoose.Schema(
-  {
-    members: {
-      type: Array,
+    {
+        members: {
+            type: Array,
+        },
+        message: {
+            type: String,
+        },
     },
-    message: {
-      type: String,
-    },
-  },
-  { timestamps: true }
+    { timestamps: true }
 );
 
-const LiveChat = mongoose.model("LiveChat", ChatSchema);
+const LiveChat = mongoose.model('LiveChat', ChatSchema);
 
 module.exports = LiveChat;

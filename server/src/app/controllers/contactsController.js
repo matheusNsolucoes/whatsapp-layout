@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const apiUrl = process.env.API_URL;
 const axios = require('axios');
+const LiveChat = require('../models/livechat');
 
 const axiosReq = axios.create({
     // cria a instância de conexão do axios
@@ -27,10 +28,9 @@ const newContact = async (req, res) => {
             });
 
             if (duplicate) {
-                return res.status(503).send('[!!] The contact already exist');
+                return res.send('[!!] The contact already exist');
             } else {
-                let {data} = await axiosReq
-                .get(`${apiUrl}/misc/getStatus?key=${user_id}&id=${phone_number}`); // pega o status do usuário
+                let { data } = await axiosReq.get(`${apiUrl}/misc/getStatus?key=${user_id}&id=${phone_number}`); // pega o status do usuário
 
                 // caso o número não esteja cadastrado no banco
                 axiosReq
@@ -64,73 +64,83 @@ const newContact = async (req, res) => {
                             }
                         );
                     })
-                    .catch((err) => console.log("[!!] The contact doesn't have a whatsapp account!"));
+                    .catch((err) => {
+                        return res.send(err.data.message);
+                    });
             }
         });
     } catch (err) {
-        console.log('[!!] Error saving contact - ' + err);
+        return res.send(err.data.message);
     }
 };
 
 const deleteContact = async (req, res) => {
     const { user_token, phone_number } = req.body;
 
-    User.find({ userId: user_token }, (err, arr) => {
-        arr.forEach((items) => {
-            User.findOneAndUpdate(
-                { phoneNumber: phone_number },
-                {
-                    $pull: { contactList: { phoneNumber: phone_number } },
-                },
-                { new: true },
-                (err, arr) => {
-                    if (arr) {
-                        return res.status(200).send('[!!] Contact deleted.');
+    try {
+        User.find({ userId: user_token }, (err, arr) => {
+            arr.forEach((items) => {
+                User.findOneAndUpdate(
+                    { phoneNumber: phone_number },
+                    {
+                        $pull: { contactList: { phoneNumber: phone_number } },
+                    },
+                    { new: true },
+                    (err, arr) => {
+                        if (arr) {
+                            return res.status(200).send('[!!] Contact deleted.');
+                        }
                     }
-                }
-            );
+                );
+            });
         });
-    });
+    } catch (err) {
+        console.log('[!!] Error on deleting contact - ' + err);
+    }
 };
 
 const blockUser = async (req, res) => {
     const userId = req.headers['authentication'];
     const contactNumber = req.query.contactNumber;
 
-    try {
-        axios.get(`${apiUrl}/misc/blockUser?key=${userId}&id=${contactNumber}`).then(async (response) => {
+    axios
+        .get(`${apiUrl}/misc/blockUser?key=${userId}&id=${contactNumber}`)
+        .then(async (response) => {
             let data = await response.data;
 
             res.status(200).send('[!!] Contato bloqueado com sucesso! - ' + data);
+        })
+        .catch((err) => {
+            res.send('[!!] Erro ao bloquear contato - ' + err);
         });
-    } catch (err) {
-        res.send('[!!] Erro ao bloquear contato - ' + err);
-    }
 };
-
 
 const consultContacts = async (req, res) => {
     const userToken = req.headers['authentication'];
 
-    User.find({ userId: userToken }, (err, arr) => {
-        // puxa todos os contatos de determinado usuário, busca através da identificação do usuário (user_token)
-        arr.forEach((items) => {
-            contacts = items.contactList;
+    try {
+        User.find({ userId: userToken }, (err, arr) => {
+            // puxa todos os contatos de determinado usuário, busca através da identificação do usuário (user_token)
+            arr.forEach((items) => {
+                contacts = items.contactList;
 
-            let array = contacts.map((item) => {
-                return {
-                    number: item.phoneNumber,
-                    contact: item.contactName,
-                    pfp: item.picture,
-                    date: item.createdAt,
-                    email: item.email,
-                    status: item.status,
-                };
+                let array = contacts.map((item) => {
+                    return {
+                        number: item.phoneNumber,
+                        contact: item.contactName,
+                        pfp: item.picture,
+                        date: item.createdAt,
+                        email: item.email,
+                        status: item.status,
+                    };
+                });
+
+                return res.send(array);
             });
-
-            return res.send(array);
         });
-    });
+    } catch (err) {
+        console.log('[!!] Error on deleting contact - ' + err);
+    }
 };
 
 const getGroups = async (req, res) => {
@@ -148,7 +158,7 @@ const getGroups = async (req, res) => {
             return res.send(array);
         })
         .catch((err) => {
-            console.log('[!!] Erro buscando grupos - ' + err);
+            return err;
         });
 };
 
@@ -166,38 +176,7 @@ const getContactPic = async (req, res) => {
             return res.send(data.data);
         })
         .catch((err) => {
-            return res.send('[!! No picture found [!!] ');
-        });
-};
-
-const getPicture = async (userId, contactNumber) => {
-    // pega a foto do contato
-    // const { user_id, contact_number } = req.body;
-
-    axiosReq
-        .get(`${apiUrl}/misc/downProfile?key=${userId}&id=${contactNumber}`)
-        .then(async (response) => {
-            let data = await response.data;
-
-            return data.data;
-        })
-        .catch((err) => {
-            return res.send('[!! No picture found [!!] ');
-        });
-};
-
-const getStatus = async (req, res) => {
-    const userId = req.headers['userid'];
-    const contactNumber = req.query.contactNumber;
-
-    axiosReq
-        .get(`${apiUrl}/misc/getStatus?key=${userId}&id=${contactNumber}`)
-        .then(async (response) => {
-            let data = await response.data;
-            return res.send(data.data);
-        })
-        .catch((err) => {
-            return res.send('[!] No status found [!]');
+            return res.send(err);
         });
 };
 
@@ -206,22 +185,30 @@ const updateName = async (req, res) => {
     const { phoneNumber, newName } = req.body;
     const userToken = req.headers['authentication'];
 
-    await User.findOneAndUpdate(
-        { userId: userToken },
-        { $set: { 'contactList.$[elem].contactName': newName } },
-        { arrayFilters: [{ 'elem.phoneNumber': phoneNumber }] }
-    );
+    try {
+        await User.findOneAndUpdate(
+            { userId: userToken },
+            { $set: { 'contactList.$[elem].contactName': newName } },
+            { arrayFilters: [{ 'elem.phoneNumber': phoneNumber }] }
+        );
 
-    res.send('Contato atualizado com sucesso.');
+        res.send('Contato atualizado com sucesso.');
+    } catch (err) {
+        console.log('[!!] Error on deleting contact - ' + err);
+    }
 };
+
+const getNonContacts = async (req, res) => {
+
+}
 
 module.exports = {
     newContact,
     deleteContact,
     consultContacts,
     getContactPic,
-    getStatus,
     blockUser,
     getGroups,
     updateName,
+    getNonContacts,
 };

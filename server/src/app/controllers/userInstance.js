@@ -45,7 +45,7 @@ const initUser = async (req, res) => {
             }
         })
         .catch((err) => {
-            return res.send(err);
+            return err;
         });
 };
 
@@ -62,7 +62,7 @@ const deleteIns = async (req, res) => {
                 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE',
             },
         })
-        .then(async (response) => {
+        .then(async () => {
             axios.delete(`${apiUrl}/instance/logout?key=${key}`, {
                 // assim que a instância é deletada, faz o logout do usuário da API
                 headers: {
@@ -72,21 +72,30 @@ const deleteIns = async (req, res) => {
                     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE',
                 },
             });
+        })
+        .catch((err) => {
+            return err;
         });
 };
 
 const listIns = async (req, res) => {
     const userToken = req.headers['authentication'];
     // Lista todos os usuários conectados na API
-    axiosReq.get(`${apiUrl}/instance/list`).then(async (response) => {
-        let data = await response.data;
 
-        switch (response.status) {
-            case 200:
-                return res.send(data.data.filter((id) => id.includes(userToken)));
-                break;
-        }
-    });
+    axiosReq
+        .get(`${apiUrl}/instance/list`)
+        .then(async (response) => {
+            let data = await response.data;
+
+            switch (response.status) {
+                case 200:
+                    return res.send(data.data.filter((id) => id.includes(userToken)));
+                    break;
+            }
+        })
+        .catch((err) => {
+            return err;
+        });
 };
 
 // pega as informações de uma instância [foto, nome, número de telefone, id da instância]
@@ -119,6 +128,9 @@ const getInfo = async (req, res) => {
                 // caso o contrário:
                 return res.status(404).send('Usuário não encontrado');
             }
+        })
+        .catch((err) => {
+            return res.send(err.data.message);
         });
 };
 
@@ -127,7 +139,6 @@ const checkStatus = async (req, res) => {
     const userToken = req.headers['authentication'];
 
     const hashed_key = encryptKey(userId, userToken);
-
     axiosReq
         .get(
             // pega as informações do usuário da API
@@ -143,6 +154,9 @@ const checkStatus = async (req, res) => {
                 // caso o contrário:
                 return res.status(404).send('Usuário não encontrado');
             }
+        })
+        .catch((err) => {
+            return err;
         });
 };
 

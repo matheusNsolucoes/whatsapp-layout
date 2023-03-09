@@ -37,6 +37,7 @@ import {
     OptionsIcon,
     OptionsDropdown,
     ImageWrapper,
+    ContactRow,
 } from './styles';
 import InputEmoji from 'react-input-emoji';
 import { pdfjs } from 'react-pdf';
@@ -63,6 +64,8 @@ import {
     clearChat,
     getGroups,
     getContactPic,
+    addNewContact,
+    getAllChats,
 } from '../../../services/api';
 import {
     BsImage,
@@ -80,7 +83,6 @@ import './styles.css';
 import ContactInfoPage from './ContactInfoPage';
 import FilePreviewPage from './FilePreviewPage';
 import { useDetectOutsideClick } from '../../../utils/checkOutsideClick';
-import ContactRow from '../../../components/ContactRow';
 import { Dropdown } from 'reactstrap';
 
 function ChatPage({ match }) {
@@ -207,13 +209,38 @@ function ChatPage({ match }) {
     useEffect(() => {
         let socket = io.connect(process.env.REACT_APP_URL); // socket de conexão com o back-end
 
-        const saveReceiverMsg = async () => {
+        const saveReceiverMsg = async (data) => {
             // ao receber a mensagem vinda do socket
+            if (!contacts.some((contact) => contact.number === data.from)) {
+                let contactData = await getAllChats({ userId: userIns, from: data.from });
+
+                addNewContact({
+                    phone_number: contactData.data[0].members[1],
+                    contact_name: contactData.data[0].members[1],
+                    user_token: localStorage.getItem('userToken'),
+                    user_id: userIns,
+                    email: '',
+                });
+
+                setContacts((contacts) => [
+                    ...contacts,
+                    {
+                        pfp: '',
+                        number: contactData.data[0].members[1],
+                        contact: contactData.data[0].members[1],
+                        email: '',
+                        status: '',
+                        date: '',
+                    },
+                ]);
+            }
             setNewContactMessageFlag((prev) => !prev);
         };
 
         // hook que recebe as requisições de socket do servidor (os sockets mandam as mensagem recebidas pelo usuário)
-        socket.on('message', saveReceiverMsg);
+        socket.on('message', (data) => {
+            saveReceiverMsg(data);
+        });
 
         return () => {
             socket.disconnect();
@@ -519,7 +546,7 @@ function ChatPage({ match }) {
                     </SearchContainer>
                 </ContactHeader>
                 <Contacts>
-                    {contacts
+                    {contacts // exibe os contatos do usuário na tela
                         ?.filter((contact) => contact.contact?.toLowerCase().includes(searchBox?.toLowerCase()))
                         .map((contact, index) => {
                             var result = contactsMessages.filter((obj) => {
@@ -528,11 +555,6 @@ function ChatPage({ match }) {
 
                             return (
                                 <ContactRow
-                                    result={result}
-                                    name={contact.contact}
-                                    number={contact.number}
-                                    selectedNumber={selectedContact.contactId}
-                                    pfp={contact.pfp}
                                     key={index}
                                     onClick={() =>
                                         handleGetChat(
@@ -544,11 +566,46 @@ function ChatPage({ match }) {
                                             contact.status,
                                             false
                                         )
-                                    }
-                                />
+                                    }>
+                                    <ContactPfp
+                                        src={contact.pfp !== null ? contact.pfp : defaultPic}
+                                        onError={({ currentTarget }) => {
+                                            currentTarget.onerror = null;
+                                            currentTarget.src = defaultPic;
+                                        }}
+                                    />
+                                    <ContactName>
+                                        <p>{contact.contact}</p>
+                                        {result !== [] && (
+                                            <small>
+                                                {(result[0]?.type === 'text' && (
+                                                    <span>
+                                                        <BsCheckAll /> {result[0]?.message}
+                                                    </span>
+                                                )) ||
+                                                    (result[0]?.type === 'file' && (
+                                                        <>
+                                                            <AiFillCamera /> Imagem
+                                                        </>
+                                                    )) ||
+                                                    (result[0]?.type == 'quotedText' && (
+                                                        <span>
+                                                            <BsCheckAll /> {result[0]?.message}
+                                                        </span>
+                                                    ))}
+                                            </small>
+                                        )}
+                                    </ContactName>
+                                    <EndColumn>
+                                        <sub>{result[0]?.date}</sub>
+                                        {result[0]?.unreadMessages > 0 && (
+                                            <NewMessages>{result[0]?.unreadMessages}</NewMessages>
+                                        )}
+                                    </EndColumn>
+                                </ContactRow>
                             );
                         })}
-                    {groups
+                    {groups // exibe os grupos do usuário na tela
                         ?.filter((group) => group.subject?.toLowerCase().includes(searchBox?.toLowerCase()))
                         .map((group, index) => {
                             var result = contactsMessages.filter((obj) => {
@@ -557,12 +614,7 @@ function ChatPage({ match }) {
 
                             return (
                                 <ContactRow
-                                    result={result}
                                     key={index}
-                                    name={group.subject}
-                                    number={group.id}
-                                    selectedNumber={selectedContact.contactId}
-                                    pfp={group.profilePicture}
                                     onClick={() =>
                                         handleGetChat(
                                             group.id,
@@ -574,8 +626,43 @@ function ChatPage({ match }) {
                                             true,
                                             group.participants
                                         )
-                                    }
-                                />
+                                    }>
+                                    <ContactPfp
+                                        src={group.profilePicture !== null ? group.profilePicture : defaultPic}
+                                        onError={({ currentTarget }) => {
+                                            currentTarget.onerror = null;
+                                            currentTarget.src = defaultPic;
+                                        }}
+                                    />
+                                    <ContactName>
+                                        <p>{group.subject}</p>
+                                        {result !== [] && (
+                                            <small>
+                                                {(result[0]?.type === 'text' && (
+                                                    <span>
+                                                        <BsCheckAll /> {result[0]?.message}
+                                                    </span>
+                                                )) ||
+                                                    (result[0]?.type === 'file' && (
+                                                        <>
+                                                            <AiFillCamera /> Imagem
+                                                        </>
+                                                    )) ||
+                                                    (result[0]?.type == 'quotedText' && (
+                                                        <span>
+                                                            <BsCheckAll /> {result[0]?.message}
+                                                        </span>
+                                                    ))}
+                                            </small>
+                                        )}
+                                    </ContactName>
+                                    <EndColumn>
+                                        <sub>{result[0]?.date}</sub>
+                                        {result[0]?.unreadMessages > 0 && (
+                                            <NewMessages>{result[0]?.unreadMessages}</NewMessages>
+                                        )}
+                                    </EndColumn>
+                                </ContactRow>
                             );
                         })}
                 </Contacts>

@@ -39,6 +39,7 @@ const userHandler = async (req, res) => {
 
           socket.ioObject.emit("message", {
             type: "text",
+            from: req.body.body.text.messages[0].key.remoteJid.split("@")[0],
           });
         } else if (req.body.body.message.imageMessage) {
           // imagens
@@ -72,6 +73,7 @@ const userHandler = async (req, res) => {
 
           socket.ioObject.emit("message", {
             type: "file",
+            from: req.body.body.key.remoteJid.split("@")[0],
           });
         } else if (req.body.body.message.stickerMessage) {
           // figurinhas
@@ -94,6 +96,7 @@ const userHandler = async (req, res) => {
 
           socket.ioObject.emit("message", {
             type: "quotedText",
+            from: req.body.body.key.remoteJid.split("@")[0],
           });
         } else if (req.body.body.message.extendedTextMessage.text) {
           // texto2
@@ -108,6 +111,7 @@ const userHandler = async (req, res) => {
 
           socket.ioObject.emit("message", {
             type: "text",
+            from: req.body.body.key.remoteJid.split("@")[0],
           });
         } else {
           console.log("sem handle");
