@@ -24,20 +24,6 @@ function CampaignHeader() {
        getCampaignsForReport()
       }, [])
 
-    //   let nameCampaign = ''
-
-    //   compaigns.map((co) => {
-    //     nameCampaign = co
-    //   })
-    //oi
-
-    // console.log(`no header: ${JSON.stringify(compaigns)}`)
-
-    //   const report = {
-    //     name: 
-
-    //   }
-// vai
       const handleReport = async () => {
         // Cria uma planilha usando a biblioteca XLSX
         const spreadsheet = XLSX.utils.json_to_sheet(compaigns);

@@ -15,14 +15,6 @@ import {
     forgetPasswordFailed,
 } from './actions';
 
-import {
-    newUser,
-    authUser
-} from '../../services/api';
-
-import 'jwt-encode'
-import sign from 'jwt-encode';
-
 /**
  * Sets the session
  * @param {*} user
@@ -36,30 +28,7 @@ const setSession = user => {
  * Login the user
  * @param {*} payload - username and password
  */
-
-const auth = async (username, password) => {
-    try {
-        authUser(username, password).then((item) => {
-            const user = {
-                id: item.data.id,
-                firstName: "testando",
-                lastName: "jooj",
-                role: "Admin",
-                token: "", // criar um token usando jwt e passar nesse objeto
-                username: username
-            }
-            let token = sign(user, "secret")
-            user.token = token;
-            setSession(user);
-    
-            return user;
-        })
-    } catch (err) {
-        return false
-    }
-}
-
-async function login({ payload: { username, password } }) {
+function* login({ payload: { username, password } }) {
     const options = {
         body: JSON.stringify({ username, password }),
         method: 'POST',
@@ -67,22 +36,9 @@ async function login({ payload: { username, password } }) {
     };
 
     try {
-        // fazer verificação de usuário no banco
-
-       let data = auth(username, password)
-
-       if (data != false) {
-        window.location = `/dashboard`
-       }
-
-        // if(response.Sta)
-
-        // se a verificação for verdadeira, crie esse objeto passando os dados do usuário
-        // if(response){
-
-
-        // }
-
+        const response = yield call(fetchJSON, '/users/authenticate', options);
+        setSession(response);
+        yield put(loginUserSuccess(response));
     } catch (error) {
         let message;
         switch (error.status) {
@@ -95,7 +51,7 @@ async function login({ payload: { username, password } }) {
             default:
                 message = error;
         }
-        return put(loginUserFailed(message));
+        yield put(loginUserFailed(message));
         setSession(null);
     }
 }
@@ -110,7 +66,7 @@ function* logout({ payload: { history } }) {
         yield call(() => {
             history.push('/account/login');
         });
-    } catch (error) { }
+    } catch (error) {}
 }
 
 /**

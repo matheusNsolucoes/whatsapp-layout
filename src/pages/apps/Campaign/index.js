@@ -20,31 +20,6 @@ const Campaign = () => {
         getAllCompaigns()
     }, [])
 
-    campaigns.map((camp) => {
-        camp.flow.map((fa) => {
-            console.log(`aqui: ${JSON.stringify(fa)}`)
-        })
-    })
-    
-    // useEffect(() => {
-    //     const getFlowsss = async () => {
-    //         const {data} = await getOneFlow({userToken, nameFlow: 'chip'});
-    //         setFlow(data)
-    //         console.log(`dados do flow: ${JSON.stringify(flow)}`)
-    //     }
-    //     getFlowsss()
-    // }, [])
-    // console.log(`dados do flow2: ${JSON.stringify(flow)}`)
-
-
-    // useEffect(() => {
-    //     const createCampaignF = async () => {
-    //         const flowJson = JSON.stringify(flow)
-    //         await createCampaign('nova camp', flowJson, userToken).then(() => console.log('Salvou'))
-    //     }
-    //     createCampaignF()
-    // }, [])
-
     const {
         modalState: { visible },
         openModal,
