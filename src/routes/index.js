@@ -90,7 +90,7 @@ const rootRoute = {
     path: '/',
     exact: true,
     component: () => <Redirect to={`/${userIns}/dashboard`} />,
-    route: PrivateRoute,
+    route: Route,
 };
 
 // dashboards
@@ -99,8 +99,7 @@ const dashboardRoutes = {
     name: 'Painel de Controle',
     icon: FeatherIcon.Sliders,
     component: Dashboard,
-    roles: ['Admin'],
-    route: PrivateRoute,
+   route: Route,
 };
 
 const audienceRoutes = {
@@ -108,8 +107,7 @@ const audienceRoutes = {
     name: 'Audiência',
     icon: FeatherIcon.Users,
     component: Audience,
-    roles: ['Admin'],
-    route: PrivateRoute,
+   route: Route,
 };
 
 // apps
@@ -119,8 +117,7 @@ const calendarAppRoutes = {
     name: 'Calendario',
     icon: FeatherIcon.Mail,
     component: CalendarApp,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const campaignAppRoutes = {
@@ -128,8 +125,7 @@ const campaignAppRoutes = {
     name: 'Campanha',
     icon: FeatherIcon.Book,
     component: Campaign,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const emailAppRoutes = {
@@ -137,8 +133,7 @@ const emailAppRoutes = {
     name: 'Transmissão',
     icon: FeatherIcon.Send,
     component: Transmission,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const chatAppRoutes = {
@@ -146,8 +141,7 @@ const chatAppRoutes = {
     name: 'Chat ao Vivo',
     icon: FeatherIcon.MessageCircle,
     component: ChatPage,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const taskAppRoutes = {
@@ -159,15 +153,15 @@ const taskAppRoutes = {
             path: '/apps/tasks/list',
             name: 'Palavras Chaves',
             component: TaskList,
-            route: PrivateRoute,
-            roles: ['Admin'],
+           route: Route,
+    
         },
         {
             path: '/apps/tasks/board',
             name: 'Sequências',
             component: TaskBoard,
-            route: PrivateRoute,
-            roles: ['Admin'],
+           route: Route,
+    
         },
     ],
 };
@@ -177,8 +171,7 @@ const fluxAppRoutes = {
     name: 'Fluxo de Conversas',
     icon: FeatherIcon.MessageSquare,
     component: ChatFlux,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const settingsAppRoutes = {
@@ -186,8 +179,7 @@ const settingsAppRoutes = {
     name: 'Configurações',
     icon: FeatherIcon.Settings,
     component: Settings,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const flowAppRoutes = {
@@ -195,8 +187,7 @@ const flowAppRoutes = {
     name: 'Flow',
     icon: FeatherIcon.Settings,
     component: Flow,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 }
 
 const profileAppRoutes = {
@@ -204,8 +195,7 @@ const profileAppRoutes = {
     name: 'Perfil',
     icon: FeatherIcon.User,
     component: CalendarApp,
-    route: PrivateRoute,
-    roles: ['Admin'],
+   route: Route,
 };
 
 const appRoutes = [
@@ -274,7 +264,7 @@ const flattenRoutes = (routes) => {
 };
 
 // All routes
-const allRoutes = [rootRoute, dashboardRoutes, chatAppRoutes, fluxAppRoutes, audienceRoutes, settingsAppRoutes, emailAppRoutes, flowAppRoutes, ...appRoutes];
+const allRoutes = [rootRoute, dashboardRoutes, audienceRoutes, ...appRoutes];
 
 const authProtectedRoutes = [dashboardRoutes, audienceRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
