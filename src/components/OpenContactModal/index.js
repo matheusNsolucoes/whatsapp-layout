@@ -40,6 +40,7 @@ import {
     getMessages,
     getCurrentChat,
     updateContactName,
+    getTagForContact,
 } from '../../services/api';
 import { convertoToFullStringDate, convertToFullDate, convertToPhone } from '../../utils/conversions';
 import { SearchInput } from '../../pages/apps/Audience/styles';
@@ -54,33 +55,41 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
     const [chatId, setChatId] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [userName, setUserName] = useState(name);
+    const [tagsForContact, setTagsForContact] = useState([])
     const selectRef = useRef(null);
 
     const userToken = localStorage.getItem('userToken');
 
     const handleTagClick = (tagName, tag) => {
-        if (!selectedTags.includes(tagName)) {
-            setSelectedTags([...selectedTags, tagName]);
-            setTag(tag);
+        if(selectedTags) {
+            selectedTags.map((tags) => {
+                if(tags.name === tagName) return;
+    
+                setSelectedTags([...selectedTags, tag]);
+                setTag(tag);
+            })
         }
+        setSelectedTags([...selectedTags, tag]);
+                setTag(tag);
     };
 
-    const handleAddTag = useCallback(async () => {
-        await createTagForContact(userToken, number, tag);
-    }, [tag, selectedTags]);
-
+    const handleAddTag = async (tagFromMap) => {
+        if(selectedTags) {
+            const tagAlreadyExists = selectedTags.some(tag => tag.name === tagFromMap.name);
+            if (tagAlreadyExists) {
+                alert('A msm tag não pode ser adicionada');
+                return;
+            }
+        }
+        await createTagForContact(userToken, number, tagFromMap);
+    };
+    
     const handleRemove = (tagName) => {
-        setSelectedTags((tags) => tags.filter((tag) => tag !== tagName));
+        setSelectedTags((tags) => tags.filter((tag) => tag.name !== tagName));
     };
 
-    const handleRemoveTags = async (tagName) => {
-        tagsSelect.map((tag) => {
-            tag.tags.map((item) => {
-                if (item.name === tagName) setTagForDelete(item);
-            });
-        });
-
-        await deleteTagForContact(userToken, number, tagForDelete);
+    const handleRemoveTags = async (tag) => {
+        await deleteTagForContact(userToken, number, tag).then(() => console.log('deletado'));
     };
 
     useEffect(() => {
@@ -148,6 +157,15 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
         await updateContactName({ name: userName, number: number });
         setIsEditing(!isEditing);
     };
+
+    useEffect(() => {
+        const getTagsForContactsModal = async() => {
+            const {data} = await getTagForContact(userToken, number);
+            setTagsForContact(data)
+            setSelectedTags(data)
+        }
+        getTagsForContactsModal()
+    }, [])
 
     return (
         <Container>
@@ -231,7 +249,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
                                                     value={tag.name}
                                                     onClick={() => {
                                                         handleTagClick(tag.name, tag);
-                                                        handleAddTag();
+                                                        handleAddTag(tag);
                                                     }}>
                                                     {tag.name}
                                                 </option>
@@ -246,12 +264,21 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
                             )}
                         </ContentDetailHeader>
                         <ContentDetailItemList>
-                            {selectedTags.map((tagName) => (
+                            <>
+                            {tagsForContact && (
+                                <>
+                                {selectedTags.map((tagName) => (
                                 <ContentDetailItemListItem>
-                                    <ItemListItemSpan key={tagName}>{tagName}</ItemListItemSpan>
-                                    <IoCloseCircleOutline size={15} />
+                                    <ItemListItemSpan key={tagName.name}>{tagName.name}</ItemListItemSpan>
+                                    <IoCloseCircleOutline size={15} onClick={() => {
+                                        handleRemoveTags(tagName);
+                                        handleRemove(tagName.name)
+                                    }} />
                                 </ContentDetailItemListItem>
-                            ))}
+                                ))}
+                                </>
+                            )}
+                           </> 
                         </ContentDetailItemList>
                     </ContentDetail>
                     <ContentDetail>
@@ -272,12 +299,10 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
                             )}
                         </ContentDetailHeader>
                         <ContentDetailItemList>
-                            {selectedTags.map((tagName) => (
                                 <ContentDetailItemListItem>
                                     <ItemListItemSpan>Retornar</ItemListItemSpan>
                                     <IoCloseCircleOutline size={15} />
                                 </ContentDetailItemListItem>
-                            ))}
                         </ContentDetailItemList>
                     </ContentDetail>
                     <ContentDetail>

@@ -110,27 +110,64 @@ function UserPanel({ match }) {
         reader.readAsArrayBuffer(file);
     };
 
+    console.log(`Contatos antes da planilha: ${JSON.stringify(contacts)}`)
+
     const handleReport = async () => {
-        // Cria uma planilha usando a biblioteca XLSX
-        const spreadsheet = XLSX.utils.json_to_sheet(contacts);
+        const sheetName = 'Contacts';
 
-        // Cria um livro de trabalho e adiciona a planilha a ele
-        const contact = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(contact, spreadsheet, 'Relatorio');
+        // Cria um novo Workbook e Worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(contacts);
 
-        // Converte o livro de trabalho em um ArrayBuffer (array de bytes)
-        const sheet = XLSX.write(contact, { type: 'array', bookType: 'xlsx' });
+        // Modifica os cabeçalhos das colunas
+        ws['!cols'] = [{ width: 20 }, { width: 30 }, { width: 30 }, { width: 50 }];
 
-        // Cria um objeto Blob a partir do ArrayBuffer
-        const blob = new Blob([sheet], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        // Itera sobre cada objeto e adiciona cada tag como uma nova linha
+        contacts.forEach((contact, idx) => {
+        if (Array.isArray(contact.tags)) {
+            contact.tags.forEach((tag) => {
+            const row = {
+                number: contact.number,
+                contact: contact.contact,
+                email: contact.email,
+                tags: `${tag.name} - ${tag.description}`,
+            };
+            XLSX.utils.sheet_add_json(ws, [row], { skipHeader: true, origin: idx + 1 });
+            });
+        } else {
+            const row = {
+            number: contact.number,
+            contact: contact.contact,
+            email: contact.email,
+            tags: `${contact.tags.name} - ${contact.tags.description}`,
+            };
+            XLSX.utils.sheet_add_json(ws, [row], { skipHeader: true, origin: idx + 1 });
+        }
+        });
 
-        const url = URL.createObjectURL(blob);
+        // Adiciona o Worksheet ao Workbook e converte para um buffer
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+        const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+
+        // Cria um objeto Blob com o buffer e faz o download do arquivo
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const fileName = 'contacts.xlsx';
+        if (navigator.msSaveBlob) {
+        // IE 10+
+        navigator.msSaveBlob(blob, fileName);
+        } else {
         const link = document.createElement('a');
-        link.href = url;
-        link.download = 'relatorio.xlsx';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        if (link.download !== undefined) {
+            // URL.createObjectURL() não é suportado no IE < 10
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        }
     };
 
     return (

@@ -160,6 +160,15 @@ export const deleteTagForContact = async (userToken, contactNumber, tags) => {
     }
 };
 
+export const getTagForContact = async (userToken, phoneNumber) => {
+    try {
+       return await axios.post(`${url}/contacts/tags/get`, {userToken, phoneNumber});
+    } catch (error) {
+        console.log('Error while calling createtags API', error);
+    }
+};
+
+
 // Tags
 
 export const createTagForUser = async (userToken, tags) => {
