@@ -27,7 +27,7 @@ const ChatPage = React.lazy(() => import('../pages/apps/LiveChat/index'));
 const ChatFlux = React.lazy(() => import('../pages/apps/ChatFlux/index'));
 const Audience = React.lazy(() => import('../pages/apps/Audience/index'))
 const Settings = React.lazy(() => import("../pages/apps/SettingsPage/index"))
-const Transmission = React.lazy(() => import( '../pages/apps/Transmission/index'));
+const Transmission = React.lazy(() => import('../pages/apps/Transmission/index'));
 const Flow = React.lazy(() => import("../pages/apps/Flow/index"))
 
 // pages
@@ -64,6 +64,7 @@ const userIns = localStorage.getItem('userIns');
 
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
+    
     <Route
         {...rest}
         render={(props) => {
@@ -99,7 +100,7 @@ const dashboardRoutes = {
     name: 'Painel de Controle',
     icon: FeatherIcon.Sliders,
     component: Dashboard,
-   route: Route,
+    route: PrivateRoute,
 };
 
 const audienceRoutes = {
@@ -107,7 +108,7 @@ const audienceRoutes = {
     name: 'Audiência',
     icon: FeatherIcon.Users,
     component: Audience,
-   route: Route,
+    route: Route,
 };
 
 // apps
@@ -117,7 +118,7 @@ const calendarAppRoutes = {
     name: 'Calendario',
     icon: FeatherIcon.Mail,
     component: CalendarApp,
-   route: Route,
+    route: Route,
 };
 
 const campaignAppRoutes = {
@@ -125,7 +126,7 @@ const campaignAppRoutes = {
     name: 'Campanha',
     icon: FeatherIcon.Book,
     component: Campaign,
-   route: Route,
+    route: Route,
 };
 
 const emailAppRoutes = {
@@ -133,7 +134,7 @@ const emailAppRoutes = {
     name: 'Transmissão',
     icon: FeatherIcon.Send,
     component: Transmission,
-   route: Route,
+    route: Route,
 };
 
 const chatAppRoutes = {
@@ -141,7 +142,7 @@ const chatAppRoutes = {
     name: 'Chat ao Vivo',
     icon: FeatherIcon.MessageCircle,
     component: ChatPage,
-   route: Route,
+    route: Route,
 };
 
 const taskAppRoutes = {
@@ -153,15 +154,15 @@ const taskAppRoutes = {
             path: '/apps/tasks/list',
             name: 'Palavras Chaves',
             component: TaskList,
-           route: Route,
-    
+            route: Route,
+
         },
         {
             path: '/apps/tasks/board',
             name: 'Sequências',
             component: TaskBoard,
-           route: Route,
-    
+            route: Route,
+
         },
     ],
 };
@@ -171,7 +172,7 @@ const fluxAppRoutes = {
     name: 'Fluxo de Conversas',
     icon: FeatherIcon.MessageSquare,
     component: ChatFlux,
-   route: Route,
+    route: Route,
 };
 
 const settingsAppRoutes = {
@@ -179,7 +180,7 @@ const settingsAppRoutes = {
     name: 'Configurações',
     icon: FeatherIcon.Settings,
     component: Settings,
-   route: Route,
+    route: Route,
 };
 
 const flowAppRoutes = {
@@ -187,7 +188,7 @@ const flowAppRoutes = {
     name: 'Flow',
     icon: FeatherIcon.Settings,
     component: Flow,
-   route: Route,
+    route: Route,
 }
 
 const profileAppRoutes = {
@@ -195,7 +196,7 @@ const profileAppRoutes = {
     name: 'Perfil',
     icon: FeatherIcon.User,
     component: CalendarApp,
-   route: Route,
+    route: Route,
 };
 
 const appRoutes = [
