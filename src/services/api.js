@@ -383,7 +383,7 @@ export const updateGroupName = async (data) => {
 
 export const createFlow = async (data) => {
     try {
-      return await axios.post(`${url}/flow/create`, {data})
+      return await axios.post(`${url}/flow/create`, data)
     } catch (error) {
       console.log("Error while calling getFlow API", error);
     }
