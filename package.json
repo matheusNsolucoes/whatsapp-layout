@@ -21,7 +21,7 @@
         "draftjs-to-html": "^0.8.4",
         "jwt-decode": "^2.2.0",
         "jwt-encode": "^1.0.1",
-        "metismenujs": "^1.1.0",
+        "metismenujs": "^1.4.0",
         "moment": "^2.29.4",
         "nookies": "^2.5.2",
         "react": "^16.9.0",
