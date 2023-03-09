@@ -44,8 +44,11 @@ class Routes extends Component {
 
     // returns the layout
     getLayout = () => {
-        if (!isUserAuthenticated()) return AuthLayout;
-
+        
+        //verfica se esta logado atraves dos cookies para rederizar o menu
+        
+        if(!isUserAuthenticated()){return AuthLayout}
+        
         let layoutCls = VerticalLayout;
 
         switch (this.props.layout.layoutType) {

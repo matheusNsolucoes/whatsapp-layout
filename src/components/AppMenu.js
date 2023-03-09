@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import MetisMenu from 'metismenujs';
-import {useCookies} from "react-cookie"
 
 import { initMenu, changeActiveMenuFromLocation } from '../redux/actions';
 import { useState } from 'react';
