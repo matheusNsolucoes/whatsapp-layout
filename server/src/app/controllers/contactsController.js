@@ -14,7 +14,7 @@ const newContact = async (req, res) => {
     const { phone_number, contact_name, user_token, user_id, email } = req.body;
 
     try {
-        User.find({ userId: user_token }, (err, arr) => {
+        User.find({ userId: user_token }, async (err, arr) => {
             // procura por duplicatas de contatos no banco, se houver, não adiciona o contato
             var duplicate = false;
 
@@ -29,11 +29,14 @@ const newContact = async (req, res) => {
             if (duplicate) {
                 return res.status(503).send('[!!] The contact already exist');
             } else {
+                let {data} = await axiosReq
+                .get(`${apiUrl}/misc/getStatus?key=${user_id}&id=${phone_number}`); // pega o status do usuário
+
                 // caso o número não esteja cadastrado no banco
                 axiosReq
                     .get(`${apiUrl}/misc/downProfile?key=${user_id}&id=${phone_number}`) // pega a foto de usuário do número
                     .then(async (response) => {
-                        let data = await response.data;
+                        let picture = await response.data;
 
                         User.findOneAndUpdate(
                             {
@@ -45,8 +48,9 @@ const newContact = async (req, res) => {
                                     contactList: {
                                         phoneNumber: phone_number,
                                         contactName: contact_name,
-                                        picture: data.data,
+                                        picture: picture.data,
                                         createdAt: new Date(),
+                                        status: data.data.status,
                                         email: email,
                                     },
                                 },
@@ -120,6 +124,7 @@ const consultContacts = async (req, res) => {
                     pfp: item.picture,
                     date: item.createdAt,
                     email: item.email,
+                    status: item.status,
                 };
             });
 

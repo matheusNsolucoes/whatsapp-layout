@@ -11,12 +11,12 @@ function ParticipantsRow(props) {
 
     useEffect(() => {
         const savePicture = async () => {
-            let data = await getContactPic({
+            let picture = await getContactPic({
                 contactNumber: participantNumber,
                 userId: userId,
             });
 
-            setPicture(data.data);
+            setPicture(picture);
         };
         savePicture();
     }, []);

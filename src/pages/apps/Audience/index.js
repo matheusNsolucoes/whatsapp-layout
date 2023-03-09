@@ -67,7 +67,7 @@ function UserPanel({ match }) {
             let data = await getContacts({
                 userToken: localStorage.getItem('userToken'),
             });
-            setContacts(data.data);
+            setContacts(data);
         };
         loadContacts();
     }, []);
@@ -143,6 +143,7 @@ function UserPanel({ match }) {
                             number={numberForModal}
                             name={contactNameModal}
                             contact={contacts}
+                            pfp={contactPfpModal}
                             userIns={userIns}
                             createdAt={createdAt}
                         />
@@ -370,6 +371,7 @@ function UserPanel({ match }) {
                                                                               setModalType('ContatcInfo');
                                                                               setNumberForModal(contact.number);
                                                                               setContactNameModal(contact.contact);
+                                                                              setContactPfpModal(contact.pfp);
                                                                               setCreatedAt(contact.date);
                                                                           }}>
                                                                           <td className="text-center">

@@ -36,7 +36,6 @@ import {
     createTagForUser,
     deleteTagForContact,
     getAllTags,
-    getContactPic,
     getMessages,
     getCurrentChat,
     updateContactName,
@@ -50,7 +49,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
     const [tagsSelect, setTagsSelect] = useState([]);
     const [tag, setTag] = useState();
     const [tagForDelete, setTagForDelete] = useState();
-    const [contactInfo, setContactInfo] = useState({ pfp: '', interactions: 0 });
+    const [interactions, setInteractions] = useState(0);
     const [chatId, setChatId] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [userName, setUserName] = useState(name);
@@ -125,13 +124,8 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
 
     useEffect(() => {
         const getInfo = async () => {
-            let data = await getContactPic({
-                userId: userIns,
-                contactNumber: number,
-            });
-
             let lengthData = await handleGetMsgs();
-            setContactInfo({ pfp: data.data, interactions: lengthData.length });
+            setInteractions(lengthData.length);
         };
         getInfo();
     }, [chatId]);
@@ -158,7 +152,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
                         <ContainerLeftPanelTopPart>
                             <div>:</div>
                             <ContainerLeftPanelAvatar
-                                src={contactInfo.pfp}
+                                src={pfp}
                                 onError={({ currentTarget }) => {
                                     currentTarget.onerror = null;
                                     currentTarget.src = defaultPic;
@@ -175,7 +169,7 @@ function OpenContactModal({ number, name, contact, pfp, userIns, createdAt }) {
                         </ContainerLeftPanelUserDetails>
                         <ContainerLeftPanelUserDetails>
                             <BsPeopleFill size={15} />
-                            Interações: {contactInfo.interactions}
+                            Interações: {interactions}
                         </ContainerLeftPanelUserDetails>
                         <ContainerLeftPanelUserDetails>
                             <div>Código de Indicação: 122552458</div>

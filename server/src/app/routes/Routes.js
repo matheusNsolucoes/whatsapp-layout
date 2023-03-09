@@ -63,7 +63,6 @@ route.post("/instance/deleteIns", instance.deleteIns);
 route.get("/instance/listIns", instance.listIns);
 route.get("/instance/getInfo", instance.getInfo);
 route.get("/instance/checkStatus", instance.checkStatus);
-route.get("/instance/downloadPfp", instance.downloadPfp);
 
 //User  flows
 route.post("/flow/create", flow.newFlow);

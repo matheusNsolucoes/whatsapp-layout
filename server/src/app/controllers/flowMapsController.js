@@ -3,7 +3,6 @@ const User = require("../models/user");
 const createMapFlow = async (req, res) => {
     try {
       const {data, userToken, flowName} = req.body
-  
       const query = { userId: userToken };
   
       const update = {
@@ -20,7 +19,7 @@ const createMapFlow = async (req, res) => {
         arrayFilters: [{ 'flow.name': flowName }] 
       };
   
-      await User.findOneAndUpdate(query, update, options).then(() => console.log('foi'));
+      await User.findOneAndUpdate(query, update, options);
   
       return res.status(200)
     } catch (error) {

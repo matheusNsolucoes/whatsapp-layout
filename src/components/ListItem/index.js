@@ -13,8 +13,8 @@ function ListItem(props) {
         const getUserInfo = async () => {
             let data = await getInfo({ userId: props.name });
             setInsInfo({
-                username: data.data.instance_data.user.name,
-                userId: data.data.instance_data.user.id.split(':')[0],
+                username: data.username,
+                userId: data.userPhone,
             });
         };
         getUserInfo();
