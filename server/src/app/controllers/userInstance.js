@@ -130,7 +130,7 @@ const getInfo = async (req, res) => {
             }
         })
         .catch((err) => {
-            return res.send(err.data.message);
+            return res.send(err);
         });
 };
 

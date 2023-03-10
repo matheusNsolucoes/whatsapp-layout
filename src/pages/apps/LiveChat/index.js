@@ -170,28 +170,25 @@ function ChatPage({ match }) {
         };
     }, []);
 
-    // esse hook é disparado no primeiro load da página e serve para buscar a lista de contatos e grupos do usuário
+    // pega todos os grupos do usuário
     useEffect(() => {
-        const getAllContacts = async () => {
-            let contactData = await getContacts({
-                userToken: localStorage.getItem('userToken'),
-                userId: userIns,
-            });
-
-            let data = await getAllChats({ userId: userIns})
-
+        const getAllGroups = async () => {
             let groupData = await getGroups({
                 userId: userIns,
             });
 
-            setContacts(contactData);
             setGroups(groupData);
         };
-        getAllContacts();
+        getAllGroups();
     }, []);
 
+    // pega todos os contatos do usuário
     useEffect(() => {
-        let data = await getAllChats({userId: userIns})
+        const allChats = async () => {
+            let data = await getAllChats({userId: userIns})
+            setContacts(data.data);
+        }
+        allChats();
     }, [])
 
     // hook que busca a foto de perfil dos grupos do usuário
@@ -278,19 +275,19 @@ function ChatPage({ match }) {
                 if (contact !== null) {
                     let data = await getContactLastMessage({
                         from: userIns,
-                        to: contact.number,
+                        to: contact.members[1],
                     }); // retorna a ultima mensagem que o contato enviou, este código é executado para todos os contatos da lista
 
                     if (data.data.lastMessage !== null) {
                         // se os dados não forem vazios
                         if (
-                            !contactsMessages.some((number) => number.contact === contact.number) // se o numéro do contato não está no state de ultimas mensagens
+                            !contactsMessages.some((number) => number.contact === contact.members[1]) // se o numéro do contato não está no state de ultimas mensagens
                         ) {
                             setContactsMessages((contactsMessages) => [
                                 // salva a ultima mensagem do contato na lista
                                 ...contactsMessages,
                                 {
-                                    contact: contact.number,
+                                    contact: contact.members[1],
                                     message: data.data.lastMessage.text,
                                     date: convertToDate(data.data.lastMessage.date),
                                     type: data.data.lastMessage.type,
@@ -299,7 +296,7 @@ function ChatPage({ match }) {
                             ]);
                         } else {
                             // caso o contato já esteja
-                            let targetIndex = contactsMessages.findIndex((number) => number.contact === contact.number);
+                            let targetIndex = contactsMessages.findIndex((number) => number.contact === contact.members[1]);
 
                             if (targetIndex !== -1) {
                                 // sobrescreve os valores com a nova mensagem recebida
@@ -354,7 +351,6 @@ function ChatPage({ match }) {
         // essa função serve para buscar as informações do chat selecionado
         if (userIns !== null && number !== '') {
             let data = await getCurrentChat({ from: userIns, to: number });
-            console.log(data);
 
             setSelectedContact({
                 chatId: data.data._id,
@@ -531,10 +527,10 @@ function ChatPage({ match }) {
                 </ContactHeader>
                 <Contacts>
                     {contacts // exibe os contatos do usuário na tela
-                        ?.filter((contact) => contact.contact?.toLowerCase().includes(searchBox?.toLowerCase()))
+                        ?.filter((contact) => contact.contactName?.toLowerCase().includes(searchBox?.toLowerCase()))
                         .map((contact, index) => {
                             var result = contactsMessages.filter((obj) => {
-                                return obj.contact === contact.number;
+                                return obj.contact === contact.members[1];
                             });
 
                             return (
@@ -542,24 +538,24 @@ function ChatPage({ match }) {
                                     key={index}
                                     onClick={() =>
                                         handleGetChat(
-                                            contact.number,
-                                            contact.pfp,
-                                            contact.contact,
-                                            convertoToFullStringDate(contact.date),
-                                            contact.email,
-                                            contact.status,
+                                            contact.members[1],
+                                            contact.contactProfilePicture,
+                                            contact.contactName,
+                                            convertoToFullStringDate(contact.createdAt),
+                                            '',
+                                            contact.contactStatus,
                                             false
                                         )
                                     }>
                                     <ContactPfp
-                                        src={contact.pfp !== null ? contact.pfp : defaultPic}
+                                        src={contact.contactProfilePicture !== null ? contact.contactProfilePicture : defaultPic}
                                         onError={({ currentTarget }) => {
                                             currentTarget.onerror = null;
                                             currentTarget.src = defaultPic;
                                         }}
                                     />
                                     <ContactName>
-                                        <p>{contact.contact}</p>
+                                        <p>{contact.contactName}</p>
                                         {result !== [] && (
                                             <small>
                                                 {(result[0]?.type === 'text' && (

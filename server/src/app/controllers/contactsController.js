@@ -12,65 +12,45 @@ const axiosReq = axios.create({
 });
 
 const newContact = async (req, res) => {
-    const { phone_number, contact_name, user_token, user_id, email } = req.body;
+    const { phoneNumber, contactName, userId, contactEmail } = req.body;
 
     try {
-        User.find({ userId: user_token }, async (err, arr) => {
-            // procura por duplicatas de contatos no banco, se houver, não adiciona o contato
-            var duplicate = false;
-
-            arr.forEach((items) => {
-                items.contactList.forEach((contact) => {
-                    if (contact.phoneNumber == phone_number) {
-                        duplicate = true;
-                    }
-                });
-            });
-
-            if (duplicate) {
-                return res.send('[!!] The contact already exist');
-            } else {
-                let { data } = await axiosReq.get(`${apiUrl}/misc/getStatus?key=${user_id}&id=${phone_number}`); // pega o status do usuário
-
-                // caso o número não esteja cadastrado no banco
-                axiosReq
-                    .get(`${apiUrl}/misc/downProfile?key=${user_id}&id=${phone_number}`) // pega a foto de usuário do número
-                    .then(async (response) => {
-                        let picture = await response.data;
-
-                        User.findOneAndUpdate(
-                            {
-                                userId: user_token,
-                            },
-                            {
-                                $push: {
-                                    // salva o contato no banco de dados
-                                    contactList: {
-                                        phoneNumber: phone_number,
-                                        contactName: contact_name,
-                                        picture: picture.data,
-                                        createdAt: new Date(),
-                                        status: data.data.status,
-                                        email: email,
-                                    },
-                                },
-                            },
-                            { new: true },
-                            (err, arr) => {
-                                if (err) {
-                                    return res.status(500).send(err);
-                                }
-                                res.status(200).json(arr.contactList);
-                            }
-                        );
-                    })
-                    .catch((err) => {
-                        return res.send(err.data.message);
-                    });
-            }
+        const exist = await LiveChat.findOne({
+            // procura no banco de dados o chat correspondente
+            members: {
+                $all: [userId, phoneNumber],
+            },
         });
+
+        if (!exist) {
+            // se esse chat não existir, ele gera um novo documento no banco pra ele
+
+            let { data } = await axiosReq.get(`${apiUrl}/misc/getStatus?key=${userId}&id=${phoneNumber}`); // pega o status do usuário
+
+            // caso o número não esteja cadastrado no banco
+            axiosReq
+                .get(`${apiUrl}/misc/downProfile?key=${userId}&id=${phoneNumber}`) // pega a foto de usuário do número
+                .then(async (response) => {
+                    let picture = await response.data;
+
+                    const newChat = new LiveChat({
+                        members: [userId, phoneNumber],
+                        contactName: contactName,
+                        contactProfilePicture: picture.data,
+                        contactStatus: data.data.status,
+                        contactEmail: contactEmail,
+                    });
+
+                    await newChat.save(); // salva o documento
+                })
+                .catch((err) => {
+                    return res.send(err.data.message);
+                });
+        }
+
+        return res.status(200).send('[!!] ja existe');
     } catch (err) {
-        return res.send(err.data.message);
+        res.send(err);
     }
 };
 
@@ -183,14 +163,9 @@ const getContactPic = async (req, res) => {
 const updateName = async (req, res) => {
     // Atualiza o nome do contato
     const { phoneNumber, newName } = req.body;
-    const userToken = req.headers['authentication'];
 
     try {
-        await User.findOneAndUpdate(
-            { userId: userToken },
-            { $set: { 'contactList.$[elem].contactName': newName } },
-            { arrayFilters: [{ 'elem.phoneNumber': phoneNumber }] }
-        );
+        await LiveChat.findOneAndUpdate({members: {$all: [phoneNumber]}}, {$set: {contactName: newName}});
 
         res.send('Contato atualizado com sucesso.');
     } catch (err) {
@@ -198,9 +173,7 @@ const updateName = async (req, res) => {
     }
 };
 
-const getNonContacts = async (req, res) => {
-
-}
+const getNonContacts = async (req, res) => {};
 
 module.exports = {
     newContact,

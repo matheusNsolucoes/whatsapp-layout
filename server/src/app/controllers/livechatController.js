@@ -41,7 +41,7 @@ const getChat = async (req, res) => {
 
         return res.status(200).json(conversation);
     } catch (err) {
-        return res.send(err);
+        return res.send('[!!] Erro ao buscar o chat');
     }
 };
 
@@ -74,7 +74,7 @@ const getLastMessage = async (req, res) => {
             unreadMessagesCount: unreadMessages,
         });
     } catch (err) {
-        return err;
+        return res.send('[!!] Erro ao buscar última mensagem do usuário');
     }
 };
 
@@ -93,21 +93,15 @@ const newMessage = async (req, res) => {
                     switch (axiosRes.status) {
                         case 201:
                             return res.status(200).send('mensagem enviada');
-                            break;
                         case 404:
                             return res.status(404).send('rota não encontrada');
-                            break;
                     }
                 });
         }
 
         await newMessage.save();
-        await LiveChat.findByIdAndUpdate(chatId, {
-            message: text,
-            caption: caption,
-        });
     } catch (err) {
-        return res.send(err);
+        return res.send('[!!] Erro ao enviar mensagem');
     }
 };
 
@@ -115,30 +109,33 @@ const saveReceiverMsg = async (data) => {
     // responsavel por salvar as mensagens recebidas por web socket
     try {
         const newMessage = new ChatMessage(data);
-
         await newMessage.save();
-        await LiveChat.findByIdAndUpdate(data.chatId, {
-            message: data.text,
-            caption: data.caption,
-        });
     } catch (err) {
-        return err;
+        res.send('[!!] Erro ao salvar a mensagem recebida');
     }
 };
 
-const getReceiverChat = async (from, to) => {
+// Quando receber uma mensagem, vai verificar se quem enviou a mensagem já está registrada como um "contato", se não, vai registrar a o contato da pessoa no modelo LIVECHAT.
+const getReceiverChat = async (data) => {
     try {
         const exist = await LiveChat.findOne({
             // procura no banco de dados o chat correspondente
             members: {
-                $all: [from, to],
+                $all: [data.from, data.to],
             },
         });
 
         if (!exist) {
             // se esse chat não existir, ele gera um novo documento no banco pra ele
+            let statusData = await axiosReq.get(`${apiUrl}/misc/getStatus?key=${data.from}&id=${data.to}`);
+            let pictureData = await axiosReq.get(`${apiUrl}/misc/downProfile?key=${data.from}&id=${data.to}`); // pega a foto de usuário do número
+
             const newChat = new LiveChat({
-                members: [from, to],
+                members: [data.from, data.to],
+                contactName: data.contactName,
+                contactProfilePicture: pictureData.data.data,
+                contactStatus: statusData.data.data.status,
+                contactEmail: '',
             });
 
             await newChat.save(); // salva o documento
@@ -146,12 +143,12 @@ const getReceiverChat = async (from, to) => {
 
         let conversation = await LiveChat.findOne({
             // se ele já existir, retorna ele para o requisitor
-            members: { $all: [from, to] },
+            members: { $all: [data.from, data.to] },
         });
 
         return JSON.stringify(conversation);
     } catch (err) {
-        return err;
+        res.send('[!!] Erro ao salvar a mensagem do receiver');
     }
 };
 
@@ -176,35 +173,16 @@ const clearConversation = async (req, res) => {
 };
 
 const getAllChats = async (req, res) => {
-    // const userId = req.query.userId;
-    // const userToken = req.headers['authentication'];
+    const userId = req.query.userId;
 
-    // let data = await LiveChat.find({ members: { $all: [userId] } });
-    // data.forEach(async (chat) => {
-    //     let chatNumber = chat.members[1];
-    //     let contacts = [];
+    try {
+        let conversation = await LiveChat.find({
+            members: { $all: [userId] },
+        });
 
-        // User.find({ userId: userToken }, async (err, arr) => {
-        //     arr.forEach((items) => {
-        //         items.contactList.forEach((contact) => {
-        //             if (contact.phoneNumber == chatNumber) {
-        //                 console.log('é um contato - ' + chatNumber);
-        //                 contacts.push(contact);
-        //             }
-        //         })
-        //     });
-        // });
-
-        // f.forEach((contact) => {
-        //     console.log(contact)
-        // })
-    // });
-};
-
-const checkMessagerData = async (req, res) => {
-    const { userId, userToken, phoneNumber } = req.body;
-    let result = await LiveChat.exists({ members: { $all: [phoneNumber] } });
-    if (result == null) {
+        return res.status(200).json(conversation);
+    } catch (err) {
+        return res.send('[!!] Erro ao buscar todos os chats');
     }
 };
 
@@ -220,7 +198,7 @@ const getMessages = async (req, res) => {
 
         return res.status(200).json(messages);
     } catch (err) {
-        return res.send(err);
+        return res.send('[!!] Erro ao puxar as mensagens');
     }
 };
 

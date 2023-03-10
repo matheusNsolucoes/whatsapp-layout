@@ -15,7 +15,7 @@ import { convertToFullDate, convertToPhone } from '../../../utils/conversions';
 import { useModalContext } from '../../../modal.context';
 import * as XLSX from 'xlsx';
 import defaultPic from '../../../assets/images/defaultPic.jpg';
-import { getAllTags, getContacts } from '../../../services/api';
+import { getAllChats, getAllTags, getContacts } from '../../../services/api';
 import {
     AiOutlineDownload,
     AiOutlineUpload,
@@ -64,10 +64,10 @@ function UserPanel({ match }) {
     useEffect(() => {
         // pega os contatos do usuário
         const loadContacts = async () => {
-            let data = await getContacts({
-                userToken: localStorage.getItem('userToken'),
+            let data = await getAllChats({
+                userId: userIns,
             });
-            setContacts(data);
+            setContacts(data.data);
         };
         loadContacts();
     }, []);
@@ -309,7 +309,7 @@ function UserPanel({ match }) {
                                                     {searchBox !== ''
                                                         ? contacts
                                                               .filter((contact) =>
-                                                                  contact.contact
+                                                                  contact.contactName
                                                                       ?.toLowerCase()
                                                                       .includes(searchBox?.toLowerCase())
                                                               )
@@ -317,24 +317,24 @@ function UserPanel({ match }) {
                                                                   return (
                                                                       <tr style={{ cursor: 'pointer' }} key={index}>
                                                                           <td className="text-center">
-                                                                              <Checkbox value={contact.number} />
+                                                                              <Checkbox value={contact.members[1]} />
                                                                           </td>
                                                                           <div
                                                                               style={{ display: 'contents' }}
                                                                               onClick={() => {
                                                                                   openModal();
                                                                                   setModalType('ContatcInfo');
-                                                                                  setNumberForModal(contact.number);
-                                                                                  setContactNameModal(contact.contact);
-                                                                                  setContactPfpModal(contact.pfp);
-                                                                                  setCreatedAt(contact.date);
+                                                                                  setNumberForModal(contact.members[1]);
+                                                                                  setContactNameModal(contact.contactName);
+                                                                                  setContactPfpModal(contact.contactProfilePicture);
+                                                                                  setCreatedAt(contact.createdAt);
                                                                               }}>
                                                                               <td className="text-center">
                                                                                   <span>
                                                                                       <ProfilePicture
                                                                                           src={
                                                                                               contact.pfp !== null
-                                                                                                  ? contact.pfp
+                                                                                                  ? contact.contactProfilePicture
                                                                                                   : defaultPic
                                                                                           }
                                                                                           onError={({
@@ -348,11 +348,11 @@ function UserPanel({ match }) {
                                                                                   </span>
                                                                               </td>
                                                                               <td className="id-nome">
-                                                                                  {contact.contact}
+                                                                                  {contact.contactName}
                                                                               </td>
-                                                                              <td>{convertToPhone(contact.number)}</td>
+                                                                              <td>{convertToPhone(contact.members[1])}</td>
                                                                               <td className="inscrito">
-                                                                                  {convertToFullDate(contact.date)}
+                                                                                  {convertToFullDate(contact.createdAt)}
                                                                               </td>
                                                                           </div>
                                                                       </tr>
@@ -362,24 +362,24 @@ function UserPanel({ match }) {
                                                               return (
                                                                   <tr key={index} style={{ cursor: 'pointer' }}>
                                                                       <td className="text-center">
-                                                                          <Checkbox value={contact.number} />
+                                                                          <Checkbox value={contact.members[1]} />
                                                                       </td>
                                                                       <div
                                                                           style={{ display: 'contents' }}
                                                                           onClick={() => {
                                                                               openModal();
                                                                               setModalType('ContatcInfo');
-                                                                              setNumberForModal(contact.number);
-                                                                              setContactNameModal(contact.contact);
-                                                                              setContactPfpModal(contact.pfp);
-                                                                              setCreatedAt(contact.date);
+                                                                              setNumberForModal(contact.members[1]);
+                                                                              setContactNameModal(contact.contactName);
+                                                                              setContactPfpModal(contact.contactProfilePicture);
+                                                                              setCreatedAt(contact.createdAt);
                                                                           }}>
                                                                           <td className="text-center">
                                                                               <span>
                                                                                   <ProfilePicture
                                                                                       src={
-                                                                                          contact.pfp !== null
-                                                                                              ? contact.pfp
+                                                                                          contact.contactProfilePicture !== null
+                                                                                              ? contact.contactProfilePicture
                                                                                               : defaultPic
                                                                                       }
                                                                                       onError={({ currentTarget }) => {
@@ -389,10 +389,10 @@ function UserPanel({ match }) {
                                                                                       }}></ProfilePicture>
                                                                               </span>
                                                                           </td>
-                                                                          <td className="id-nome">{contact.contact}</td>
-                                                                          <td>{convertToPhone(contact.number)}</td>
+                                                                          <td className="id-nome">{contact.contactName}</td>
+                                                                          <td>{convertToPhone(contact.members[1])}</td>
                                                                           <td className="inscrito">
-                                                                              {convertToFullDate(contact.date)}
+                                                                              {convertToFullDate(contact.createdAt)}
                                                                           </td>
                                                                       </div>
                                                                   </tr>

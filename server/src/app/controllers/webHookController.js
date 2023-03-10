@@ -4,11 +4,8 @@ const fs = require('fs');
 const crypto = require('crypto');
 const livechat = require('../controllers/livechatController');
 const path = require('path');
-const LiveChat = require('../models/livechat');
 
 const userHandler = async (req, res) => {
-    console.log(req.body.body);
-
     switch (req.body.type) {
         case 'connection': // se caso o web hook recebido por do tipo de conexão
             if (req.body.body.connection == 'open') {
@@ -18,11 +15,13 @@ const userHandler = async (req, res) => {
         case 'message':
             if (req.body.body.key.fromMe == false) {
                 // execute apenas se essa mensagem veio de outra pessoa
-                let data = await livechat.getReceiverChat(
+                let data = await livechat.getReceiverChat({
                     // pega o chat da conversa
-                    req.body.instanceKey,
-                    req.body.body.key.remoteJid.split('@')[0]
-                );
+                    from: req.body.instanceKey,
+                    to: req.body.body.key.remoteJid.split('@')[0],
+                    contactName: req.body.body.key.remoteJid.split('@')[0],
+                    contactProfilePicture: '',
+                });
 
                 let json = JSON.parse(data);
                 let chatId = json._id; // pega o chatId da conversa
