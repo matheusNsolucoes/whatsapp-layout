@@ -66,6 +66,7 @@ import {
     getContactPic,
     addNewContact,
     getAllChats,
+    checkMessagerData
 } from '../../../services/api';
 import {
     BsImage,
@@ -177,6 +178,8 @@ function ChatPage({ match }) {
                 userId: userIns,
             });
 
+            let data = await getAllChats({ userId: userIns})
+
             let groupData = await getGroups({
                 userId: userIns,
             });
@@ -186,6 +189,10 @@ function ChatPage({ match }) {
         };
         getAllContacts();
     }, []);
+
+    useEffect(() => {
+        let data = await getAllChats({userId: userIns})
+    }, [])
 
     // hook que busca a foto de perfil dos grupos do usuário
     useEffect(() => {
@@ -210,30 +217,6 @@ function ChatPage({ match }) {
         let socket = io.connect(process.env.REACT_APP_URL); // socket de conexão com o back-end
 
         const saveReceiverMsg = async (data) => {
-            // ao receber a mensagem vinda do socket
-            if (!contacts.some((contact) => contact.number === data.from)) {
-                let contactData = await getAllChats({ userId: userIns, from: data.from });
-
-                addNewContact({
-                    phone_number: contactData.data[0].members[1],
-                    contact_name: contactData.data[0].members[1],
-                    user_token: localStorage.getItem('userToken'),
-                    user_id: userIns,
-                    email: '',
-                });
-
-                setContacts((contacts) => [
-                    ...contacts,
-                    {
-                        pfp: '',
-                        number: contactData.data[0].members[1],
-                        contact: contactData.data[0].members[1],
-                        email: '',
-                        status: '',
-                        date: '',
-                    },
-                ]);
-            }
             setNewContactMessageFlag((prev) => !prev);
         };
 
@@ -371,6 +354,7 @@ function ChatPage({ match }) {
         // essa função serve para buscar as informações do chat selecionado
         if (userIns !== null && number !== '') {
             let data = await getCurrentChat({ from: userIns, to: number });
+            console.log(data);
 
             setSelectedContact({
                 chatId: data.data._id,

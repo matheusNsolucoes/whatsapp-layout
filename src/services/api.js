@@ -7,7 +7,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getInfo = async (reqData) => {
     try {
-        const {data} = await axios.get(`${url}/instance/getInfo`, {
+        const { data } = await axios.get(`${url}/instance/getInfo`, {
             headers: {
                 Authentication: reqData.userId,
             },
@@ -81,7 +81,7 @@ export const getContacts = async (reqData) => {
 
 export const getContactPic = async (reqData) => {
     try {
-        const {data} = await axios.get(`${url}/contacts/getContactPic?contactId=${reqData.contactNumber}`, {
+        const { data } = await axios.get(`${url}/contacts/getContactPic?contactId=${reqData.contactNumber}`, {
             headers: {
                 userId: reqData.userId,
             },
@@ -95,7 +95,7 @@ export const getContactPic = async (reqData) => {
 
 export const getGroups = async (reqData) => {
     try {
-        const {data} = await axios.get(`${url}/contacts/getGroups`, {
+        const { data } = await axios.get(`${url}/contacts/getGroups`, {
             headers: {
                 Authentication: reqData.userId,
             },
@@ -140,11 +140,11 @@ export const updateContactName = async (data) => {
 
 export const getNonContacts = async (data) => {
     try {
-        return await axios.post(`${url}/contacts/getNonContacts`, data)
+        return await axios.post(`${url}/contacts/getNonContacts`, data);
     } catch (error) {
-        console.log("Erro")
+        console.log('Erro');
     }
-}
+};
 
 // Contacts Tags
 
@@ -268,11 +268,19 @@ export const sendMessage = async (data) => {
 
 export const getAllChats = async (data) => {
     try {
-        return await axios.get(`${url}/livechat/getAllChats?userId=${data.userId}&phoneNumber=${data.from}`);
+        return await axios.get(`${url}/livechat/getAllChats?userId=${data.userId}`);
     } catch (error) {
-        console.log("error")
+        console.log('error');
     }
-}
+};
+
+export const checkMessagerData = async (data) => {
+    try {
+        return await axios.post(`${url}/livechat/checkMessagerData`, data);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export const sendImage = async (data) => {
     try {
@@ -390,7 +398,7 @@ export const updateGroupName = async (data) => {
 
 export const createFlow = async (data) => {
     try {
-      return await axios.post(`${url}/flow/create`, data)
+        return await axios.post(`${url}/flow/create`, data);
     } catch (error) {
         console.log('Error while calling getFlow API', error);
     }

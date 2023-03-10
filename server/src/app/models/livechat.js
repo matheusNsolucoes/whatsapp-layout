@@ -5,6 +5,22 @@ const ChatSchema = new mongoose.Schema(
         members: {
             type: Array,
         },
+        contactProfilePicture: {
+            type: String,
+        },
+        contactName: {
+            type: String,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+        contactStatus: {
+            type: String,
+        },
+        contactEmail: {
+            type: String,
+        },
         message: {
             type: String,
         },

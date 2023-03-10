@@ -1,6 +1,8 @@
 const LiveChat = require('../models/livechat');
 const ChatMessage = require('../models/chatmessage');
 const axios = require('axios');
+const { newContact } = require('./contactsController');
+const User = require('../models/user');
 const apiUrl = process.env.API_URL;
 
 const axiosReq = axios.create({
@@ -174,12 +176,37 @@ const clearConversation = async (req, res) => {
 };
 
 const getAllChats = async (req, res) => {
-  const userId = req.query.userId;
-  const phoneNumber = req.query.phoneNumber;
+    // const userId = req.query.userId;
+    // const userToken = req.headers['authentication'];
 
-  let data = await LiveChat.find({members: {$all: [userId, phoneNumber]}})
-  return res.send(data);
-}
+    // let data = await LiveChat.find({ members: { $all: [userId] } });
+    // data.forEach(async (chat) => {
+    //     let chatNumber = chat.members[1];
+    //     let contacts = [];
+
+        // User.find({ userId: userToken }, async (err, arr) => {
+        //     arr.forEach((items) => {
+        //         items.contactList.forEach((contact) => {
+        //             if (contact.phoneNumber == chatNumber) {
+        //                 console.log('é um contato - ' + chatNumber);
+        //                 contacts.push(contact);
+        //             }
+        //         })
+        //     });
+        // });
+
+        // f.forEach((contact) => {
+        //     console.log(contact)
+        // })
+    // });
+};
+
+const checkMessagerData = async (req, res) => {
+    const { userId, userToken, phoneNumber } = req.body;
+    let result = await LiveChat.exists({ members: { $all: [phoneNumber] } });
+    if (result == null) {
+    }
+};
 
 const getMessages = async (req, res) => {
     const chatId = req.query.chatId;
