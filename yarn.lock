@@ -7060,7 +7060,8 @@ methods@~1.1.2:
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==
 
-metismenujs@^1.1.0:
+
+metismenujs@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/metismenujs/-/metismenujs-1.4.0.tgz#9a91787f057b81dae99fe3e89ccd427f64075606"
   integrity sha512-a+3/XVkG8fVA6HBYu1yQkUkVpbh2n9po3vhSzu/Pu5k6s2hbteFZMRzUQyHt6FF28N8pLOpzcb47w4ErBHEsDQ==

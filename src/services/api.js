@@ -5,13 +5,15 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 // User Controllers
 
-export const getInfo = async (data) => {
+export const getInfo = async (reqData) => {
     try {
-        return await axios.get(`${url}/instance/getInfo`, {
+        const { data } = await axios.get(`${url}/instance/getInfo`, {
             headers: {
-                Authentication: data.userId,
+                Authentication: reqData.userId,
             },
         });
+
+        return data;
     } catch (error) {
         console.log('Error while calling newConversations API ', error);
     }
@@ -22,18 +24,6 @@ export const ListInstance = async (data) => {
         return await axios.get(`${url}/instance/listIns`, {
             headers: {
                 Authentication: data.userToken,
-            },
-        });
-    } catch (error) {
-        console.log('Error while calling newConversations API ', error);
-    }
-};
-
-export const getUserPicture = async (data) => {
-    try {
-        return await axios.get(`${url}/instance/downloadPfp?contactNumber=${data.contactNumber}`, {
-            headers: {
-                Authentication: data.userId,
             },
         });
     } catch (error) {
@@ -75,37 +65,43 @@ export const deleteUserContact = async (data) => {
     }
 };
 
-export const getContacts = async (data) => {
+export const getContacts = async (reqData) => {
     try {
-        return await axios.get(`${url}/contacts/consultContacts`, {
+        const { data } = await axios.get(`${url}/contacts/consultContacts`, {
             headers: {
-                Authentication: data.userToken,
+                Authentication: reqData.userToken,
             },
         });
+
+        return data;
     } catch (error) {
         console.log('Error while calling newConversations API ', error);
     }
 };
 
-export const getContactPic = async (data) => {
+export const getContactPic = async (reqData) => {
     try {
-        return await axios.get(`${url}/contacts/getContactPic?contactId=${data.contactNumber}`, {
+        const { data } = await axios.get(`${url}/contacts/getContactPic?contactId=${reqData.contactNumber}`, {
             headers: {
-                userId: data.userId,
+                userId: reqData.userId,
             },
         });
+
+        return data;
     } catch (error) {
         console.log('Error while calling newConversations API ', error);
     }
 };
 
-export const getGroups = async (data) => {
+export const getGroups = async (reqData) => {
     try {
-        return await axios.get(`${url}/contacts/getGroups`, {
+        const { data } = await axios.get(`${url}/contacts/getGroups`, {
             headers: {
-                Authentication: data.userId,
+                Authentication: reqData.userId,
             },
         });
+
+        return data;
     } catch (error) {
         console.log('Error while calling newConversations API ', error);
     }
@@ -139,6 +135,14 @@ export const updateContactName = async (data) => {
         );
     } catch (error) {
         console.log('Error while calling newConversations API ', error);
+    }
+};
+
+export const getNonContacts = async (data) => {
+    try {
+        return await axios.post(`${url}/contacts/getNonContacts`, data);
+    } catch (error) {
+        console.log('Erro');
     }
 };
 
@@ -209,9 +213,9 @@ export const deleteTagForUser = async (userToken, tag) => {
 
 // Campaign
 export const createCampaign = async (nameCampaign, flow, userToken) => {
-    console.log(`na requi: ${flow}`)
+    console.log(`na requi: ${flow}`);
     try {
-        const { data } = await axios.post(`${url}/campaign/create`, {nameCampaign, flow, userToken});
+        const { data } = await axios.post(`${url}/campaign/create`, { nameCampaign, flow, userToken });
         return data;
     } catch (error) {
         console.log('Erro aqui', error.response.data.message);
@@ -219,20 +223,16 @@ export const createCampaign = async (nameCampaign, flow, userToken) => {
 };
 
 export const getCampaigns = async (userToken) => {
-
     try {
-        return await axios.post(`${url}/campaign/get`, {userToken});
-        
-        
+        return await axios.post(`${url}/campaign/get`, { userToken });
     } catch (error) {
         console.log('Erro aqui', error.response.data.message);
     }
 };
 
 export const updateCampaigns = async (nameCampaign, userToken, newName) => {
-
     try {
-        const { data } = await axios.put(`${url}/campaign/update`, {nameCampaign, userToken, newName});
+        const { data } = await axios.put(`${url}/campaign/update`, { nameCampaign, userToken, newName });
         return data;
     } catch (error) {
         console.log('Erro aqui', error.response.data.message);
@@ -240,9 +240,8 @@ export const updateCampaigns = async (nameCampaign, userToken, newName) => {
 };
 
 export const deleteCampaign = async (nameCampaign, userToken) => {
-
     try {
-         await axios.delete(`${url}/campaign/delete`, {data: {nameCampaign, userToken}});
+        await axios.delete(`${url}/campaign/delete`, { data: { nameCampaign, userToken } });
     } catch (error) {
         console.log('Erro aqui', error.response.data.message);
     }
@@ -273,6 +272,22 @@ export const sendMessage = async (data) => {
         return await axios.post(`${url}/livechat/newMessage`, data);
     } catch (error) {
         console.log('Error while calling newMessage API', error);
+    }
+};
+
+export const getAllChats = async (data) => {
+    try {
+        return await axios.get(`${url}/livechat/getAllChats?userId=${data.userId}`);
+    } catch (error) {
+        console.log('error');
+    }
+};
+
+export const checkMessagerData = async (data) => {
+    try {
+        return await axios.post(`${url}/livechat/checkMessagerData`, data);
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -392,11 +407,11 @@ export const updateGroupName = async (data) => {
 
 export const createFlow = async (data) => {
     try {
-      return await axios.post(`${url}/flow/create`, {data})
+        return await axios.post(`${url}/flow/create`, data);
     } catch (error) {
-      console.log("Error while calling getFlow API", error);
+        console.log('Error while calling getFlow API', error);
     }
-  }
+};
 
 /*
   user_token: string,
@@ -405,7 +420,7 @@ export const createFlow = async (data) => {
 
 export const getFlows = async (data) => {
     try {
-        return await axios.post(`${url}/flow/get`, {data});
+        return await axios.post(`${url}/flow/get`, { data });
     } catch (error) {
         console.log('Error while calling getFlow API', error);
     }
@@ -460,28 +475,28 @@ export const createFlowMap = async (data, userToken, flowName) => {
 };
 
 export const getFlowMap = async (userToken, flowName) => {
-  try {
-    console.log(`Dados chegam aqui: ${userToken, flowName}`)
-    return await axios.post(`${url}/flow/getmap`, {userToken, flowName})
-  } catch (error) {
-    console.log("Error while calling createFlowMap API", error);
-  }
-}
+    try {
+        console.log(`Dados chegam aqui: ${(userToken, flowName)}`);
+        return await axios.post(`${url}/flow/getmap`, { userToken, flowName });
+    } catch (error) {
+        console.log('Error while calling createFlowMap API', error);
+    }
+};
 
 //Login User
 
-export const newUser = async (fullname, email, password)=>{
-  try{
-    return await axios.post(`${url}/account/register`,{fullname, email, password})
-  }catch (error){
-    console.log("Error while calling createFlowMap API", error);
-  }
-}
+export const newUser = async (fullname, email, password) => {
+    try {
+        return await axios.post(`${url}/account/register`, { fullname, email, password });
+    } catch (error) {
+        console.log('Error while calling createFlowMap API', error);
+    }
+};
 
-export const authUser = async (email, password)=>{
-  try{
-    return await axios.post(`${url}/account/login`, {email, password});
-  }catch (error){
-    console.log("Error while calling authUser API", error);
-  }
-}
+export const authUser = async (email, password) => {
+    try {
+        return await axios.post(`${url}/account/login`, { email, password });
+    } catch (error) {
+        console.log('Error while calling authUser API', error);
+    }
+};

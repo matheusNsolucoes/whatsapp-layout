@@ -27,11 +27,7 @@ function CampaignCard({nameCampaign, flows}) {
     const [inputValue, setInputValue] = useState(""); // estado que guarda o valor do input da tag em edição
 
     const userToken = localStorage.getItem('userToken')
-
-    flows.map((fl) => {
-        console.log(JSON.stringify(fl), 'no card')
-    })
-
+    
     const handleEditClick = (name) => {
     setEdit(true);
     setEditedName(name);

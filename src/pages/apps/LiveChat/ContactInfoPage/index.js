@@ -17,34 +17,22 @@ import {
     EditInput,
 } from './styles';
 import defaultPic from '../../../../assets/images/defaultPic.jpg';
-import { getUserStatus, updateGroupName } from '../../../../services/api';
+import { updateGroupName, updateContactName } from '../../../../services/api';
 import { IoClose, AiOutlineClockCircle, HiOutlineMail, MdAdsClick, FaPen, BsCheck2 } from '../../../../styles/Icons';
-import axios from 'axios';
 import ParticipantsRow from '../../../../components/ParticipantsRow';
 
 function ContactInfoPage(props) {
-    const [status, setStatus] = useState('');
     const [isEditing, setEditing] = useState(false);
     const [newSubject, setNewSubject] = useState(props.name);
 
-    useEffect(() => {
-        const getStatus = async () => {
-            let data = await getUserStatus({
-                userId: props.userIns,
-                contactNumber: props.number,
-            });
-            setStatus(data.data.status);
-        };
-        getStatus();
-    }, [props.number]);
-
-    useEffect(() => {
-        if (props.isGroup == true) {
+    const finishEdit = () => {
+        if (props.isGroup) {
+            updateGroupName({ newSubject: newSubject, userId: props.userIns, groupId: props.number });
+        } else {
+            console.log("focker")
+            updateContactName({ name: newSubject, number: props.number });
         }
-    }, []);
 
-    const finishEdit = async () => {
-        updateGroupName({ newSubject: newSubject, userId: props.userIns, groupId: props.number });
         setEditing(false);
     };
 
@@ -61,28 +49,23 @@ function ContactInfoPage(props) {
                         currentTarget.src = defaultPic;
                     }}
                 />
-                {props.isGroup ? (
-                    <EditName>
-                        {isEditing ? (
-                            <EditInput>
-                                <EditContactName
-                                    type="text"
-                                    defaultValue={newSubject}
-                                    onChange={(e) => setNewSubject(e.target.value)}
-                                />
-                                <BsCheck2 size={25} onClick={() => finishEdit(false)} />
-                            </EditInput>
-                        ) : (
-                            <>
-                                <ContactName>{newSubject}</ContactName>
-                                <FaPen className="editName" size={25} onClick={() => setEditing(!isEditing)} />
-                            </>
-                        )}
-                    </EditName>
-                ) : (
-                    <ContactName>{props.name}</ContactName>
-                )}
-
+                <EditName>
+                    {isEditing ? (
+                        <EditInput>
+                            <EditContactName
+                                type="text"
+                                defaultValue={newSubject}
+                                onChange={(e) => setNewSubject(e.target.value)}
+                            />
+                            <BsCheck2 size={25} onClick={() => finishEdit(false)} />
+                        </EditInput>
+                    ) : (
+                        <>
+                            <ContactName>{newSubject}</ContactName>
+                            <FaPen className="editName" size={25} onClick={() => setEditing(!isEditing)} />
+                        </>
+                    )}
+                </EditName>
                 <ContactNumber>
                     {props.isGroup == true ? (
                         <p>Grupo · {props.participants.length} Participantes</p>
@@ -94,7 +77,7 @@ function ContactInfoPage(props) {
             <ContactInfo>
                 <Time></Time>
                 <small>Recado</small>
-                <Description>{status}</Description>
+                <Description>{props.status}</Description>
                 <Info>
                     <AiOutlineClockCircle size={20} fill="var(--grey)" />
                     <label> Inscrito em:</label> {props.subscriptionTime}

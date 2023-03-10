@@ -18,12 +18,11 @@ function NewUserModal({ userIns }) {
     const addContact = async (e) => {
         // adiciona um novo contato
         if (contactNumber > 0 && contactName != '') {
-            let data = await addNewContact({
-                phone_number: contactNumber,
-                contact_name: contactName,
-                user_token: localStorage.getItem('userToken'),
-                user_id: userIns,
-                email: contactEmail,
+            await addNewContact({
+                phoneNumber: contactNumber,
+                contactName: contactName,
+                userId: userIns,
+                contactEmail: contactEmail,
             });
             window.location.reload(false);
         } else {

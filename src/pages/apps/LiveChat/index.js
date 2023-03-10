@@ -37,6 +37,7 @@ import {
     OptionsIcon,
     OptionsDropdown,
     ImageWrapper,
+    ContactRow,
 } from './styles';
 import InputEmoji from 'react-input-emoji';
 import { pdfjs } from 'react-pdf';
@@ -63,6 +64,9 @@ import {
     clearChat,
     getGroups,
     getContactPic,
+    addNewContact,
+    getAllChats,
+    checkMessagerData
 } from '../../../services/api';
 import {
     BsImage,
@@ -80,7 +84,6 @@ import './styles.css';
 import ContactInfoPage from './ContactInfoPage';
 import FilePreviewPage from './FilePreviewPage';
 import { useDetectOutsideClick } from '../../../utils/checkOutsideClick';
-import ContactRow from '../../../components/ContactRow';
 import { Dropdown } from 'reactstrap';
 
 function ChatPage({ match }) {
@@ -119,14 +122,13 @@ function ChatPage({ match }) {
     const [currentPage, setCurrentPage] = useState(-15); // usado para otimizar o carregamento do chat
     const [fileUrl, setFileUrl] = useState('');
     const [file, setFile] = useState();
-    const [userPictureUrl, setUserPicture] = useState('');
     const [interactions, setInteractions] = useState(0);
 
     const [contactsMessages, setContactsMessages] = useState([
         { contact: '', message: '', date: '', type: '', unreadMessages: 0 },
     ]);
 
-    const [insInfo, setInsInfo] = useState({ username: '', userId: '' });
+    const [insInfo, setInsInfo] = useState({ username: '', userId: '', userPhone: '', userPicture: '' });
     const [selectedContact, setSelectedContact] = useState({
         chatId: 'main',
         contactId: '',
@@ -134,12 +136,13 @@ function ChatPage({ match }) {
         contactName: '',
         subscriptionTime: '',
         contactEmail: '',
+        contactStatus: '',
         isGroup: false,
         participants: [],
     }); // estado que guarda as informações do contato selecionado
 
+    // hook chamado para pegar as mensagens do contato selecionado e grava-las no state chatMsgs
     useEffect(() => {
-        // hook chamado para pegar as mensagens do contato selecionado e grava-las no state chatMsgs
         const getMessageDetails = async () => {
             let data = await handleGetMsgs();
             setInteractions(data.length);
@@ -167,46 +170,38 @@ function ChatPage({ match }) {
         };
     }, []);
 
+    // pega todos os grupos do usuário
     useEffect(() => {
-        // esse hook é disparado no primeiro load da página e serve para buscar a lista de contatos do usuário
-        const getAllContacts = async () => {
-            let data = await getContacts({
-                userToken: localStorage.getItem('userToken'),
-                userId: userIns
-            });
-
+        const getAllGroups = async () => {
             let groupData = await getGroups({
                 userId: userIns,
             });
 
-            setContacts(data.data);
-            setGroups(groupData.data);
+            setGroups(groupData);
         };
-        getAllContacts();
+        getAllGroups();
     }, []);
 
+    // pega todos os contatos do usuário
     useEffect(() => {
-        console.log(contacts)
+        const allChats = async () => {
+            let data = await getAllChats({userId: userIns})
+            setContacts(data.data);
+        }
+        allChats();
+    }, [])
 
-        // hook que busca a foto de perfil do usuário da aplicação
+    // hook que busca a foto de perfil dos grupos do usuário
+    useEffect(() => {
         const userPicture = () => {
             if (userIns !== '') {
-                contacts.forEach(async (contact) => {
-                    let data = await getContactPic({
-                        userId: userIns,
-                        contactNumber: contact.number,
-                    });
-
-                    contact.pfp = data.data;
-                });
-
                 groups.forEach(async (group) => {
-                    let data = await getContactPic({
+                    let groupPicture = await getContactPic({
                         userId: userIns,
                         contactNumber: group.id,
                     });
 
-                    group.profilePicture = data.data;
+                    group.profilePicture = groupPicture;
                 });
             }
             setNewMessageFlag((prev) => !prev);
@@ -214,24 +209,26 @@ function ChatPage({ match }) {
         userPicture();
     }, [groups, contacts]);
 
+    // hook usado para monitar a conexão de web sockets com o backend
     useEffect(() => {
         let socket = io.connect(process.env.REACT_APP_URL); // socket de conexão com o back-end
 
-        const saveReceiverMsg = async () => {
-            // ao receber a mensagem vinda do socket
+        const saveReceiverMsg = async (data) => {
             setNewContactMessageFlag((prev) => !prev);
         };
 
         // hook que recebe as requisições de socket do servidor (os sockets mandam as mensagem recebidas pelo usuário)
-        socket.on('message', saveReceiverMsg);
+        socket.on('message', (data) => {
+            saveReceiverMsg(data);
+        });
 
         return () => {
             socket.disconnect();
         };
     }, []);
 
+    // hook utilizado para salvar as imagens enviadas no banco de dados
     useEffect(() => {
-        // toda vez que o estado file mudar, salva a imagem no banco de dados
         const getImage = async () => {
             if (file) {
                 const data = new FormData();
@@ -245,6 +242,7 @@ function ChatPage({ match }) {
         getImage();
     }, [file]);
 
+    // hook usado para abrir o seletor de arquivos com filtros de determinado tipo de arquivo
     useEffect(() => {
         // abre o seletor de arquivos
         const openSelector = async () => {
@@ -256,31 +254,20 @@ function ChatPage({ match }) {
         setAcceptedFiles('');
     }, [acceptedFiles]);
 
+    // pega as informações da instância atual [nome, telefone, id da instância e foto de perfil]
     useEffect(() => {
-        // pega o nome e o telefone do usuário
         const getUserInfo = async () => {
             let data = await getInfo({ userId: userIns });
+
             setInsInfo({
-                username: data.data.instance_data.user.name,
-                userId: data.data.instance_data.user.id.split(':')[0],
+                username: data.username,
+                userId: data.userId,
+                userPhone: data.userPhone,
+                userPicture: data.userPicture,
             });
         };
         getUserInfo();
     }, []);
-
-    useEffect(() => {
-        // hook que busca a foto de perfil do usuário da aplicação
-        const userPicture = async () => {
-            if (insInfo.userId !== '') {
-                let data = await getUserPicture({
-                    userId: userIns,
-                    contactNumber: insInfo.userId,
-                });
-                setUserPicture(data.data);
-            }
-        };
-        userPicture();
-    }, [insInfo]);
 
     useEffect(() => {
         const getLast = () => {
@@ -288,19 +275,19 @@ function ChatPage({ match }) {
                 if (contact !== null) {
                     let data = await getContactLastMessage({
                         from: userIns,
-                        to: contact.number,
+                        to: contact.members[1],
                     }); // retorna a ultima mensagem que o contato enviou, este código é executado para todos os contatos da lista
 
                     if (data.data.lastMessage !== null) {
                         // se os dados não forem vazios
                         if (
-                            !contactsMessages.some((number) => number.contact === contact.number) // se o numéro do contato não está no state de ultimas mensagens
+                            !contactsMessages.some((number) => number.contact === contact.members[1]) // se o numéro do contato não está no state de ultimas mensagens
                         ) {
                             setContactsMessages((contactsMessages) => [
                                 // salva a ultima mensagem do contato na lista
                                 ...contactsMessages,
                                 {
-                                    contact: contact.number,
+                                    contact: contact.members[1],
                                     message: data.data.lastMessage.text,
                                     date: convertToDate(data.data.lastMessage.date),
                                     type: data.data.lastMessage.type,
@@ -309,7 +296,7 @@ function ChatPage({ match }) {
                             ]);
                         } else {
                             // caso o contato já esteja
-                            let targetIndex = contactsMessages.findIndex((number) => number.contact === contact.number);
+                            let targetIndex = contactsMessages.findIndex((number) => number.contact === contact.members[1]);
 
                             if (targetIndex !== -1) {
                                 // sobrescreve os valores com a nova mensagem recebida
@@ -360,7 +347,7 @@ function ChatPage({ match }) {
         setNewMessageFlag((prev) => !prev);
     };
 
-    const handleGetChat = async (number, pfp, name, time, email, isGroup, participants) => {
+    const handleGetChat = async (number, pfp, name, time, email, status, isGroup, participants) => {
         // essa função serve para buscar as informações do chat selecionado
         if (userIns !== null && number !== '') {
             let data = await getCurrentChat({ from: userIns, to: number });
@@ -372,6 +359,7 @@ function ChatPage({ match }) {
                 contactName: name,
                 subscriptionTime: time,
                 contactEmail: email,
+                contactStatus: status,
                 isGroup: isGroup,
                 participants: participants,
             });
@@ -518,7 +506,7 @@ function ChatPage({ match }) {
                 <ContactHeader>
                     <MyProfile>
                         <ContactPfp
-                            src={userPictureUrl}
+                            src={insInfo.userPicture}
                             onError={({ currentTarget }) => {
                                 currentTarget.onerror = null;
                                 currentTarget.src = defaultPic;
@@ -538,35 +526,66 @@ function ChatPage({ match }) {
                     </SearchContainer>
                 </ContactHeader>
                 <Contacts>
-                    {contacts
-                        ?.filter((contact) => contact.contact?.toLowerCase().includes(searchBox?.toLowerCase()))
+                    {contacts // exibe os contatos do usuário na tela
+                        ?.filter((contact) => contact.contactName?.toLowerCase().includes(searchBox?.toLowerCase()))
                         .map((contact, index) => {
                             var result = contactsMessages.filter((obj) => {
-                                return obj.contact === contact.number;
+                                return obj.contact === contact.members[1];
                             });
 
                             return (
                                 <ContactRow
-                                    result={result}
-                                    name={contact.contact}
-                                    number={contact.number}
-                                    selectedNumber={selectedContact.contactId}
-                                    pfp={contact.pfp}
                                     key={index}
                                     onClick={() =>
                                         handleGetChat(
-                                            contact.number,
-                                            contact.pfp,
-                                            contact.contact,
-                                            convertoToFullStringDate(contact.date),
-                                            contact.email,
+                                            contact.members[1],
+                                            contact.contactProfilePicture,
+                                            contact.contactName,
+                                            convertoToFullStringDate(contact.createdAt),
+                                            '',
+                                            contact.contactStatus,
                                             false
                                         )
-                                    }
-                                />
+                                    }>
+                                    <ContactPfp
+                                        src={contact.contactProfilePicture !== null ? contact.contactProfilePicture : defaultPic}
+                                        onError={({ currentTarget }) => {
+                                            currentTarget.onerror = null;
+                                            currentTarget.src = defaultPic;
+                                        }}
+                                    />
+                                    <ContactName>
+                                        <p>{contact.contactName}</p>
+                                        {result !== [] && (
+                                            <small>
+                                                {(result[0]?.type === 'text' && (
+                                                    <span>
+                                                        <BsCheckAll /> {result[0]?.message}
+                                                    </span>
+                                                )) ||
+                                                    (result[0]?.type === 'file' && (
+                                                        <>
+                                                            <AiFillCamera /> Imagem
+                                                        </>
+                                                    )) ||
+                                                    (result[0]?.type == 'quotedText' && (
+                                                        <span>
+                                                            <BsCheckAll /> {result[0]?.message}
+                                                        </span>
+                                                    ))}
+                                            </small>
+                                        )}
+                                    </ContactName>
+                                    <EndColumn>
+                                        <sub>{result[0]?.date}</sub>
+                                        {result[0]?.unreadMessages > 0 && (
+                                            <NewMessages>{result[0]?.unreadMessages}</NewMessages>
+                                        )}
+                                    </EndColumn>
+                                </ContactRow>
                             );
                         })}
-                    {groups
+                    {groups // exibe os grupos do usuário na tela
                         ?.filter((group) => group.subject?.toLowerCase().includes(searchBox?.toLowerCase()))
                         .map((group, index) => {
                             var result = contactsMessages.filter((obj) => {
@@ -575,12 +594,7 @@ function ChatPage({ match }) {
 
                             return (
                                 <ContactRow
-                                    result={result}
                                     key={index}
-                                    name={group.subject}
-                                    number={group.id}
-                                    selectedNumber={selectedContact.contactId}
-                                    pfp={group.profilePicture}
                                     onClick={() =>
                                         handleGetChat(
                                             group.id,
@@ -588,11 +602,47 @@ function ChatPage({ match }) {
                                             group.subject,
                                             '',
                                             '',
+                                            group.desc || '',
                                             true,
                                             group.participants
                                         )
-                                    }
-                                />
+                                    }>
+                                    <ContactPfp
+                                        src={group.profilePicture !== null ? group.profilePicture : defaultPic}
+                                        onError={({ currentTarget }) => {
+                                            currentTarget.onerror = null;
+                                            currentTarget.src = defaultPic;
+                                        }}
+                                    />
+                                    <ContactName>
+                                        <p>{group.subject}</p>
+                                        {result !== [] && (
+                                            <small>
+                                                {(result[0]?.type === 'text' && (
+                                                    <span>
+                                                        <BsCheckAll /> {result[0]?.message}
+                                                    </span>
+                                                )) ||
+                                                    (result[0]?.type === 'file' && (
+                                                        <>
+                                                            <AiFillCamera /> Imagem
+                                                        </>
+                                                    )) ||
+                                                    (result[0]?.type == 'quotedText' && (
+                                                        <span>
+                                                            <BsCheckAll /> {result[0]?.message}
+                                                        </span>
+                                                    ))}
+                                            </small>
+                                        )}
+                                    </ContactName>
+                                    <EndColumn>
+                                        <sub>{result[0]?.date}</sub>
+                                        {result[0]?.unreadMessages > 0 && (
+                                            <NewMessages>{result[0]?.unreadMessages}</NewMessages>
+                                        )}
+                                    </EndColumn>
+                                </ContactRow>
                             );
                         })}
                 </Contacts>
@@ -652,6 +702,7 @@ function ChatPage({ match }) {
                         userIns={userIns}
                         subscriptionTime={selectedContact.subscriptionTime}
                         email={selectedContact.contactEmail}
+                        status={selectedContact.contactStatus}
                         interactions={interactions}
                         closeView={closeView}
                         isGroup={selectedContact.isGroup}
@@ -685,7 +736,7 @@ function ChatPage({ match }) {
                                                         <FileMessage
                                                             message={{
                                                                 msg: msg,
-                                                                pfp: userPictureUrl,
+                                                                pfp: insInfo.userPicture,
                                                             }}
                                                         />
                                                         {msg.caption != '' && <p>{msg.caption}</p>}

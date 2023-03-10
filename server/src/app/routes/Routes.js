@@ -25,9 +25,9 @@ route.post("/contacts/deleteContact", contacts.deleteContact);
 route.get("/contacts/consultContacts", contacts.consultContacts);
 route.get("/contacts/getGroups", contacts.getGroups);
 route.get("/contacts/getContactPic", contacts.getContactPic);
-route.get("/contacts/getStatus", contacts.getStatus);
 route.get("/contacts/blockUserContact", contacts.blockUser);
 route.post("/contacts/updateContactName", contacts.updateName);
+route.get("/contacts/getNonContacts", contacts.getNonContacts);
 
 //contacts Tags
 
@@ -52,6 +52,7 @@ route.post("/livechat/clearChat", livechat.clearConversation);
 route.get("/livechat/getChat", livechat.getChat);
 route.get("/livechat/getMessages", livechat.getMessages);
 route.get("/livechat/getLastMessage", livechat.getLastMessage);
+route.get("/livechat/getAllChats", livechat.getAllChats)
 
 //messages
 route.post("/message/sendMessage", message.sendMessage);
@@ -63,7 +64,6 @@ route.post("/instance/deleteIns", instance.deleteIns);
 route.get("/instance/listIns", instance.listIns);
 route.get("/instance/getInfo", instance.getInfo);
 route.get("/instance/checkStatus", instance.checkStatus);
-route.get("/instance/downloadPfp", instance.downloadPfp);
 
 //User  flows
 route.post("/flow/create", flow.newFlow);
